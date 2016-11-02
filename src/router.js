@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import App from './App'
-import { User, UserEdit } from './components'
+import { SearchNav, Home, ItemList } from './components'
 
 Vue.use(VueRouter)
 const router = new VueRouter()
@@ -10,15 +10,11 @@ const router = new VueRouter()
 router.map({
   '/': {
     name: 'home',
-    component: User
+    component: Home
   },
-  '/user': {
-    name: 'user',
-    component: User
-  },
-  '/user/edit/:id': {
-    name: 'userEdit',
-    component: UserEdit
+  'searchResult': {
+    name: 'result',
+    component: ItemList
   }
 })
 export default router;

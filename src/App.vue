@@ -22,10 +22,12 @@ export default {
   padding: 0;
 }
 html, body {
-  font: 12px/1.5 arial;
+  width: 100%;
   height: 100%;
 }
-
+.main {
+  height: 100%;
+}
 .expand-transtion {
   transition: all .5s ease;
 }

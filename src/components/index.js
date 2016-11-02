@@ -6,5 +6,8 @@
 /**
  * User 模块的相关组件
 */
-export { default as User } from './user/User.vue'
-export { default as UserEdit } from './user/UserEdit.vue'
+export { default as SearchNav } from './SearchNav.vue'
+export { default as MapContainer } from './MapContainer.vue'
+export { default as Home } from './Home.vue'
+export { default as Item } from './Item.vue'
+export { default as ItemList } from './ItemList'
