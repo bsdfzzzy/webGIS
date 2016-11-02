@@ -18,7 +18,7 @@
 		left: 0;
 		width: 100%;
 		height: 40px;
-		background-color: #397419; 
+		background-color: #397419;
 	}
 	.slideDown {
 		float: left;
@@ -37,5 +37,6 @@
 		margin-top: 5px;
 		border-radius: 7px;
 		border: 1px;
+		outline: none;
 	}
 </style>
