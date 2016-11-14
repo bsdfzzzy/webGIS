@@ -1,25 +1,40 @@
 <template>
 	<div class="home">
-		<search-nav></search-nav>
+		<!-- <search-nav></search-nav> -->
 		<map-container></map-container>
-		<instruction></instruction>
+		<instruction v-if="showInstruction" transition="expand" :title="getBriefTitle" :content="getBriefContent"></instruction>
+		<navigate v-if="showNavigate" transition="expand"></navigate>
 	</div>
 </template>
 <script>
 	import MapContainer from './MapContainer'
 	import SearchNav from './SearchNav'
 	import Instruction from './Instruction'
+	import Navigate from './Navigate'
+	import { showInstruction, showNavigate, getBriefContent, getBriefTitle } from '../getters'
 
 	export default {
 		components: {
 			MapContainer,
-			SearchNav,
-			Instruction
+			//SearchNav,
+			Instruction,
+			Navigate,
+		},
+		vuex: {
+			getters: {
+				showInstruction,
+				showNavigate,
+				getBriefTitle,
+				getBriefContent
+			},
+			actions: {
+				
+			}
 		}
 	}
 </script>
 <style>
-	.main {
+	.home {
 		height: 100%;
 	}
 </style>

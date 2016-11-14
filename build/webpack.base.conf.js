@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: config.build.assetsRoot,
     publicPath: config.build.assetsPublicPath,
-    filename: '[name].js'
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
@@ -60,7 +60,8 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
-    ]
+    ],
+    noParse: /dist\/ol.js/,
   },
   vue: {
     loaders: utils.cssLoaders()
