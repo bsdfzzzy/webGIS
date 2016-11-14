@@ -65,13 +65,20 @@ const mutations = {
   	})
   },
   [types.SHOW_ALLDIRECTIONS] (state, directions) {
-  	state.navigate.showDirections = coordinate.state.buildingCoordinate
+  	state.navigate.showDirections = []
+    for (let item of coordinate.state.buildingCoordinate) {
+      if (item.id < 8) {
+        state.navigate.showDirections.push(item)
+      } else {
+        break
+      }
+    }
   },
   [types.SHOW_PARTIALDIRECTIONS] (state, str) {
   	state.navigate.showDirections = []
   	let matcher = eval('/' + str + '/')
   	coordinate.state.buildingCoordinate.map((item) => {
-  		if (item.name.match(matcher)) {
+  		if (item.name.match(matcher) && item.id < 8) {
   			state.navigate.showDirections.push(item)
   		}
   	})

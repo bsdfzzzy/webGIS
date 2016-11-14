@@ -1,17 +1,20 @@
 <template>
 	<div class="navigate">
+		<div class="closeNavigateBox" @click="closeNavigateBox">×</div>
 		<div class="content">
 			<div class="mainContent">
 				<div class="fromAndTo">
-					<input type="text" name="from" placeholder="起点" v-model="start" @focus="showStartChoose">
-					<input type="text" name="to" placeholder="目的地" @focus="showDirectionChoose" :value="direction" v-model="direction">
+					<input type="text" name="from" placeholder="{{getStart}}" v-model="start" @focus="showStartChoose">
+					<input type="text" name="to" placeholder="{{getDest}}" @focus="showDirectionChoose" :value="direction" v-model="direction">
 				</div>
 				<div class="chooseStartBox" v-if="showChooseStart">
+					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
 						<li v-for="start in showStarts" @click="selectStart" data-id="{{start.id}}">{{start.name}}</li>
 					</ul>
 				</div>
 				<div class="chooseDirectionBox" v-if="showChooseDirection">
+					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
 						<li v-for="direction in showDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.name}}</li>
 					</ul>
@@ -23,7 +26,7 @@
 </template>
 <script>
 	import { showChooseStart, showChooseDirection, showStarts, showDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest } from '../getters'
-	import { displayChooseStart, closeChooseStart, displayChooseDirection, closeChooseDirection, showAllStarts, showPartialStarts, showAllDirections, showPartialDirections, showButton, disableButton, setDestId, setStart,setDest } from '../actions/components'
+	import { displayChooseStart, closeChooseStart, displayChooseDirection, closeChooseDirection, showAllStarts, showPartialStarts, showAllDirections, showPartialDirections, showButton, disableButton, setDestId, setStart,setDest, closeNavigate } from '../actions/components'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
 	import ol from 'openlayers/dist/ol.js'
 
@@ -33,8 +36,8 @@
 		},
 		data () {
 			return {
-				start: this.getStart,
-				direction: this.getDest,
+				start: "",
+				direction: "",
 			}
 		},
 		vuex: {
@@ -64,10 +67,18 @@
 				disableButton,
 				setDestId,
 				setStart,
-				setDest
+				setDest,
+				closeNavigate
 			}
 		},
 		methods: {
+			closeChoose () {
+				this.closeStartChoose()
+				this.closeDirectionChoose()
+			},
+			closeNavigateBox() {
+				this.closeNavigate()
+			},
 			showStartChoose () {
 				this.displayChooseStart()
 				this.closeChooseDirection()
@@ -105,23 +116,23 @@
 				let destPoint = this.getDirectionCoordination
 				let popup = document.getElementById("popup")
 				popup.style.display = "none"
-				/*var viewparams = [
+				let viewparams = [
       				'x1:' + startPoint[0], 'y1:' + startPoint[1],  
       				'x2:' + destPoint[0], 'y2:' + destPoint[1]  
     			];  
     			viewparams = viewparams.join(';')
-    			console.log(viewparams)
-    			let result = new ol.layer.Image({
+    			window.pathResult = new ol.layer.Image({
     				source: new ol.source.ImageWMS({
-    					url: '',
+    					url: 'http://geoserver.gugoo.cc/geoserver/gogomap/wms',
     					params: {
-    						LAYERS: '',
+    						LAYERS: 'gogomap:sql-test',
     						FORMAT: 'image/png',
     						viewparams: viewparams
     					}
     				})
     			})
-    			map.addLayer(result)*/
+    			console.log(pathResult)
+    			map.addLayer(pathResult)
 				let startMarker = new ol.Feature({
         			type: 'iconStart',
         			geometry: new ol.geom.Point(startPoint)
@@ -196,6 +207,18 @@
 		padding: 25px 30px 15px;
 		box-sizing: border-box;
 	}
+	.closeNavigateBox {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 20px;
+		height: 20px;
+		background: rgba(200, 200, 200, 0.3);
+		font-size: 17px;
+		text-align: center;
+		line-height: 20px;
+		z-index: 1000;
+	}
 	.content {
 		width: 100%;
 		height: 100%;
@@ -246,6 +269,17 @@
 		position: absolute;
 		bottom: 45px;
 		z-index: 1000;
+	}
+	.closeChoose {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 20px;
+		height: 20px;
+		background: rgba(200, 200, 200, 0.3);
+		font-size: 15px;
+		text-align: center;
+		line-height: 20px;
 	}
 	.navigateButtonContainer {
 		width: 100%;

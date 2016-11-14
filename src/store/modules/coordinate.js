@@ -1,14 +1,14 @@
 import * as types from '../constants'
 
-let span = document.getElementById('initData')
+/*let span = document.getElementById('initData')
 let defaultCoor = JSON.parse(span.innerHTML)
-
+*/
 const state = {
- 	userCoordinate: [Number(defaultCoor.longitude), Number(defaultCoor.lantitude)/*103.92723, 30.74751*/],
+ 	userCoordinate: [/*Number(defaultCoor.longitude), Number(defaultCoor.lantitude)*/103.92723, 30.74751],
  	buildingCoordinate: [
  		{
  			id: 0,
- 			name: "荷福众创空间-1号楼-创新创业展览厅&新品发布会场",
+ 			name: "荷福众创空间-1号楼-创新创业展览厅和新品发布会场",
  			coordinate: [103.93021, 30.74717],
       disc: "总建筑面积2670.8平方米：一层面积1489.9平方，二层1180.9平方"
  		},
@@ -185,7 +185,7 @@ const state = {
       coordinate: [103.92987, 30.74740]
     },
  	],
- 	start: [Number(defaultCoor.longitude), Number(defaultCoor.lantitude)/*103.92723, 30.74751*/],
+ 	start: [/*Number(defaultCoor.longitude), Number(defaultCoor.lantitude)*/103.92723, 30.74751],
  	direction: [103.93056, 30.74784]
 }
 

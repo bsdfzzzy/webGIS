@@ -162,7 +162,7 @@
       view.setZoom(3)
       overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
-      map.on('singleclick', function(evt) {
+      map.on('click', function(evt) {
         map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
           areaImg.style.display = "block"
         })
