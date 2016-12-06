@@ -4,31 +4,38 @@
 		<div class="content">
 			<div class="mainContent">
 				<div class="fromAndTo">
-					<input type="text" name="from" placeholder="{{getStart}}" v-model="start" @focus="showStartChoose">
-					<input type="text" name="to" placeholder="{{getDest}}" @focus="showDirectionChoose" :value="direction" v-model="direction">
+					<!--<input type="text" name="from" placeholder="{{getStart}}" v-model="start" @focus="showStartChoose">-->
+					<input type="text" name="from" placeholder="{{getStart.title}}" v-model="start" @click="showStartSearchFloat">
+					<span style="color: red;" id="checkStart" v-if="!checkStart">请选择以上正确格式的建筑名称</span>
+					<!--<input type="text" name="to" placeholder="{{getDest}}" @focus="showDirectionChoose" :value="direction" v-model="direction">-->
+					<input type="text" name="to" placeholder="{{getDest.title}}" @click="showDestSearchFloat" :value="direction" v-model="direction">
+					<span style="color: red;" id="checkDest" v-if="!checkDest">请选择以上正确格式的建筑名称</span>
 				</div>
-				<div class="chooseStartBox" v-if="showChooseStart">
+				<div class="chooseStartBox" id="chooseStartBox" v-if="getShowChooseStart">
 					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
-						<li v-for="start in showStarts" @click="selectStart" data-id="{{start.id}}">{{start.name}}</li>
+						<li v-for="start in getShowStarts" @click="selectStart" data-id="{{start.id}}">{{start.name}}</li>
 					</ul>
 				</div>
-				<div class="chooseDirectionBox" v-if="showChooseDirection">
+				<div class="chooseDirectionBox" id="chooseDirectionBox" v-if="getShowChooseDirection">
 					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
-						<li v-for="direction in showDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.name}}</li>
+						<li v-for="direction in getShowDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.name}}</li>
 					</ul>
 				</div>
 			</div>
-				<button class="navigateButtonContainer" :disabled="getShowButton" @click="pathNavigate">路径规划</button>
+				<button class="navigateButtonContainer" :disabled="!getDisableButton" @click="pathNavigate">路径规划</button>
 			</div>
 	</div>
 </template>
 <script>
-	import { showChooseStart, showChooseDirection, showStarts, showDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest } from '../getters'
-	import { displayChooseStart, closeChooseStart, displayChooseDirection, closeChooseDirection, showAllStarts, showPartialStarts, showAllDirections, showPartialDirections, showButton, disableButton, setDestId, setStart,setDest, closeNavigate } from '../actions/components'
+	import { getListAll, getShowChooseStart, getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, checkStart, getBuilding, getDisableButton } from '../getters'
+	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, showPartialDirections } from '../actions/navigate'
+	import { setDestId } from '../actions/instruction'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
+	import { showSearchFloat, choosingStart, choosingDest, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
 	import ol from 'openlayers/dist/ol.js'
+	import axios from 'axios'
 
 	export default {
 		ready: function () {
@@ -42,21 +49,27 @@
 		},
 		vuex: {
 			getters: {
-				showChooseStart,
-				showChooseDirection,
-				showStarts,
-				showDirections,
+				getShowChooseStart,
+				getShowChooseDirection,
+				getShowStarts,
+				getShowDirections,
 				getShowButton,
 				getStartCoordination,
 				getDirectionCoordination,
 				getStart,
-				getDest
+				getDest,
+				checkStart,
+				checkDest,
+				getBuilding,
+				getDisableButton,
+				getListAll
 			},
 			actions: {
 				displayChooseStart,
 				displayChooseDirection,
 				closeChooseStart,
 				closeChooseDirection,
+				closeNavigate,
 				showAllDirections,
 				showAllStarts,
 				showPartialDirections,
@@ -68,10 +81,29 @@
 				setDestId,
 				setStart,
 				setDest,
-				closeNavigate
+				closeNavigate,
+				setCheckStart,
+				setCheckDest,
+				choosingStart,
+				choosingDest,
+				notChoosingStart,
+				notChoosingDest,
+				showSearchFloat
 			}
 		},
 		methods: {
+			showStartSearchFloat () {
+				this.closeNavigate()
+				this.showSearchFloat()
+				this.choosingStart()
+				this.notChoosingDest()
+			},
+			showDestSearchFloat () {
+				this.closeNavigate()
+				this.showSearchFloat()
+				this.choosingDest()
+				this.notChoosingStart()
+			},
 			closeChoose () {
 				this.closeStartChoose()
 				this.closeDirectionChoose()
@@ -79,10 +111,12 @@
 			closeNavigateBox() {
 				this.closeNavigate()
 			},
-			showStartChoose () {
+			showStartChoose (e) {
 				this.displayChooseStart()
 				this.closeChooseDirection()
-				this.disableButton()
+				if (e.target.innerHTML == "") {
+					this.showAllStarts()
+				}
 			},
 			closeStartChoose () {
 				this.closeChooseStart()
@@ -90,7 +124,6 @@
 			showDirectionChoose () {
 				this.displayChooseDirection()
 				this.closeChooseStart()
-				this.disableButton()
 			},
 			closeDirectionChoose () {
 				this.closeChooseDirection()
@@ -99,48 +132,100 @@
 				this.start = e.target.innerHTML
 				this.closeStartChoose()
 				this.setStartCoordinate(e.target.dataset.id)
-				this.showButton()
 			},
 			selectDirection (e) {
 				this.direction = e.target.innerHTML
 				this.closeDirectionChoose()
 				this.setDirectionCoordinate(e.target.dataset.id)
 				this.setDestId(e.target.dataset.id)
-				this.showButton()
+			},
+			checkStartName (e) {
+				this.closeChooseStart()
+				let startName = e.target.innerHTML
+				for (let item of this.getBuilding) {
+					if (item.name == startName) {
+						this.setStartCoordinate(item.id)
+						this.setCheckStart(true)
+						return
+					}
+				}
+				this.setCheckStart(false)
+			},
+			checkDestName (e) {
+				this.closeChooseDirection()
+				let destName = e.target.innerHTML
+				for (let item of this.getBuilding) {
+					if (item.name == destName) {
+						this.setDestCoordinate(item.id)
+						this.setCheckDest(true)
+						return
+					}
+				}
+				this.setCheckDest(false)
 			},
 			pathNavigate () {
+				let that = this
 				if (window.path) {
 					map.removeLayer(path)
+				}
+				if (window.pathResult) {
+					map.removeLayer(pathResult)
 				}
 				let startPoint = this.getStartCoordination
 				let destPoint = this.getDirectionCoordination
 				let popup = document.getElementById("popup")
 				popup.style.display = "none"
-				let viewparams = [
-      				'x1:' + startPoint[0], 'y1:' + startPoint[1],  
-      				'x2:' + destPoint[0], 'y2:' + destPoint[1]  
-    			];  
-    			viewparams = viewparams.join(';')
-    			window.pathResult = new ol.layer.Image({
-    				source: new ol.source.ImageWMS({
-    					url: 'http://geoserver.gugoo.cc/geoserver/gogomap/wms',
-    					params: {
-    						LAYERS: 'gogomap:sql-test',
-    						FORMAT: 'image/png',
-    						viewparams: viewparams
-    					}
-    				})
-    			})
-    			console.log(pathResult)
-    			map.addLayer(pathResult)
+				axios.get('http://map-php.gugoo.cc/index.php?x1=' + startPoint[0] + '&y1=' + startPoint[1] + '&x2=' + destPoint[0] + '&y2=' + destPoint[1]).then(function (res) {
+					let lineFeature = new ol.Feature({
+						geometry: new ol.geom.LineString(res.data.coordinates)
+					})
+					let lineSource = new ol.source.Vector({
+						features: [lineFeature]
+					})
+					window.pathResult = new ol.layer.Vector({
+						source: lineSource,
+						style: new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								width: 3,
+								color: [255, 0, 0, 0.8]
+							})
+						})
+					})
+					map.addLayer(pathResult)
+				}).catch(function (e) {
+					console.log(e)
+				})
+				let startPointInfo = null, destPointInfo = null
+				startPointInfo = this.getStart
+				destPointInfo = this.getDest
+				let postData = []
+				if (startPointInfo.id) {
+					postData.push(Number(startPointInfo.id))
+				}
+				if (destPointInfo.id) {
+					postData.push(Number(destPointInfo.id))
+				}
+				// if (postData.length != 0) {
+				// 	let postDataJSON = JSON.stringify({
+				// 		ids: postData
+				// 	})
+				// 	axios.post('', postDataJSON).catch(function (e) {
+				// 		console.log(e)
+				// 	})
+				// }
+				console.log(postData)
 				let startMarker = new ol.Feature({
         			type: 'iconStart',
-        			geometry: new ol.geom.Point(startPoint)
+        			geometry: new ol.geom.Point(startPoint),
+        			name: "startMarker"
       			});
+      			startMarker.setId(2)
       			let endMarker = new ol.Feature({
         			type: 'iconDest',
-        			geometry: new ol.geom.Point(destPoint)
+        			geometry: new ol.geom.Point(destPoint),
+        			name: "endMarker"
       			});
+      			endMarker.setId(3)
       			let styles = {
         			'route': new ol.style.Style({
           				stroke: new ol.style.Stroke({
@@ -151,14 +236,14 @@
           				image: new ol.style.Icon({
             				anchor: [0.5, 1],
             				src: '/static/img/start.png',
-            				scale: 0.3
+            				scale: 0.1
           				})
         			}),
         			'iconDest': new ol.style.Style({
           				image: new ol.style.Icon({
             				anchor: [0.5, 1],
             				src: '/static/img/dest.png',
-            				scale: 0.3
+            				scale: 0.1
           				})
         			})
       			}
@@ -177,11 +262,19 @@
 		watch: {
 			start: function (newStart) {
 				this.setStart(newStart)
-				if (newStart == "") {
+				if (newStart == "" || newStart == "我的位置") {
 					this.showAllStarts()
 				} else {
 					this.showPartialStarts(newStart)
 				}
+				for (let item of this.getBuilding) {
+					if (item.name == newStart) {
+						this.setStartCoordinate(item.id)
+						this.setCheckStart(true)
+						return
+					}
+				}
+				this.setCheckStart(false)
 			},
 			direction: function (newDirection) {
 				this.setDest(newDirection)
@@ -189,6 +282,26 @@
 					this.showAllDirections()
 				} else {
 					this.showPartialDirections(newDirection)
+				}
+				for (let item of this.getBuilding) {
+					if (item.name == newDirection) {
+						this.setDirectionCoordinate(item.id)
+						this.setCheckDest(true)
+						return
+					}
+				}
+				this.setCheckDest(false)
+			},
+			checkStart: function (newCheckStart) {
+				let chooseStartBox = document.getElementById("chooseStartBox")
+				if (!newCheckStart) {
+					chooseStartBox.style.bottom = "90px"
+				}
+			},
+			checkDest: function (newCheckDest) {
+				let chooseDestBox = document.getElementById("chooseDirectionBox")
+				if (!newCheckDest) {
+					chooseDestBox.style.bottom = "55px"
 				}
 			}
 		}
@@ -199,13 +312,14 @@
 		position: fixed;
 		bottom: 0;
 		width: 96%;
-		height: 172px;
-		background: rgba(52, 164, 228, 0.2);
+		min-height: 172px;
+		background: white;
 		margin: auto;
 		left: 0;
 		right: 0;
 		padding: 25px 30px 15px;
 		box-sizing: border-box;
+		border: 1px solid #aaa;
 	}
 	.closeNavigateBox {
 		position: absolute;
@@ -225,14 +339,15 @@
 	}
 	.mainContent {
 		width: 100%;
-		height: 80px;
+		min-height: 80px;
 		margin-bottom: 0px;
 		position: relative;
 	}
 	.mainContent ul {
 		list-style: none;
 		padding: 10px 20px 20px;
-		height: 180px;
+		min-height: 40px;
+		max-height: 120px;
 		overflow: auto;
 		box-sizing: border-box;
 	}
@@ -242,6 +357,7 @@
 	}
 	.fromAndTo {
 		width: 100%;
+		height: auto;
 	}
 	.fromAndTo input {
 		width: 100%;
@@ -251,24 +367,29 @@
 		background: none;
 		outline: none;
 		border: none;
-		border-bottom: 1px dashed black;
+		border-bottom: 1px dashed #888;
 		padding-left: 10px;
+		margin-top: 4px;
 	}
 	.chooseStartBox {
 		width: 100%;
-		height: 180px;
-		background: rgba(52, 164, 228, 0.3);
+		min-height: 40px;
+		max-height: 120px;
+		background: white;
 		position: absolute;
 		bottom: 80px;
 		z-index: 1000;
+		border: 1px solid #aaa;
 	}
 	.chooseDirectionBox {
 		width: 100%;
-		height: 180px;
-		background: rgba(52, 164, 228, 0.3);
+		min-height: 40px;
+		max-height: 120px;
+		background: white;
 		position: absolute;
 		bottom: 45px;
 		z-index: 1000;
+		border: 1px solid #aaa;
 	}
 	.closeChoose {
 		position: absolute;
@@ -286,7 +407,7 @@
 		height: 35px;
 		overflow: hidden;
 		box-sizing: border-box;
-		border-radius: 3px;
+		border-radius: 6px;
 		background: #34a4e4;
 		outline: none;
 		color: white;

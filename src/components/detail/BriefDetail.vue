@@ -2,17 +2,39 @@
 	<div class="briefDetail">
 		<img src="#" width="60px" height="60px" class="detailImg">
 		<div class="briefDetailContent">
-			<p><strong>akshdaksd</strong></p>
-			<p>ashdsakjd</p>
-			<p>asldad</p>
+			<p><strong>{{getDetail.title}}</strong></p>
+			<p>{{getDetail.desc}}</p>
 		</div>
 		<button class="go">go</button>
 	</div>
 </template>
-<script></script>
+<script>
+	import { getDetail } from '../../getters'
+
+	export default {
+		vuex: {
+			getters: {
+				getDetail
+			},
+			actions: {
+
+			}
+		},
+		ready: function () {
+			// let id = this.getDetail.id
+			// postDataJSON = JSON.stringify({
+			// 	ids: [id]
+			// })
+			// axios.post('', ).catch(function (e) {
+			// 	console.log(e)
+			// })
+		}
+	}
+</script>
 <style>
 	.briefDetail {
 		width: 100%;
+		box-sizing: border-box;
 		min-height: 60px;
 		padding: 30px;
 		overflow: hidden;
@@ -28,9 +50,10 @@
 		overflow: hidden;
 		float: left;
 		margin-left: 20px;
+		width: calc(100% - 100px);
 	}
 	.go {
-		float: right;
+		float: left;
 		margin-top: 20px;
 	}
 </style>

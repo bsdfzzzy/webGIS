@@ -9,14 +9,15 @@
 			<div class="hotLabel">热门搜索</div>
 		</div>
 	</div>
+	<!-- <div class="insulate"></div> -->
 </template>
 <script></script>
 <style>
 	.hot {
-		margin-top: 40px;
 		width: 100%;
 		overflow: hidden;
 		text-align: left;
+		padding: 20px 20px 0 20px;
 	}
 	.hot nav {
 		font-size: 13px;
@@ -24,7 +25,7 @@
 	}
 	.labels {
 		width: 85%;
-		margin: 20px auto;
+		margin: 20px auto 0;
 		overflow: hidden;
 	}
 	.hotLabel {
@@ -38,5 +39,10 @@
 		color: white;
 		background: #ccc;
 		padding: 4px 8px;
+	}
+	.insulate {
+		height: 8px;
+		width: 100%;
+		background: #ddd;
 	}
 </style>

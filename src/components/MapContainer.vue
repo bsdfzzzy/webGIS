@@ -13,18 +13,25 @@
     <li class="floor">2F</li>
     <li class="floor">3F</li>
   </ul> -->
+  <div class="navigateLogo" @click="logoToShowNavigate" v-if="getShowNavigateLogo">
+    <img src="/static/img/navi.png" width="40px" height="40px">
+  </div>
 </template>
 <script>
 	import ol from 'openlayers/dist/ol.js'
-  import { showInstruction, closeInstruction, showNavigate, closeNavigate, changeBrief, changeTitle, setVueMap } from '../actions/components'
-  import { getUserCoordinate, getBuilding, getPathLayer } from '../getters'
+  import { showInstruction, closeInstruction, changeBrief, changeTitle } from '../actions/instruction'
+  import { showNavigate, closeNavigate } from '../actions/navigate'
+  import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
+  import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo } from '../getters'
+  import axios from 'axios'
 
   export default {
     vuex: {
       getters: {
         getUserCoordinate,
         getBuilding,
-        getPathLayer
+        getPathLayer,
+        getShowNavigateLogo
       },
       actions: {
         showInstruction,
@@ -32,10 +39,19 @@
         closeNavigate,
         closeInstruction,
         changeBrief,
-        changeTitle
+        changeTitle,
+        showBlocks,
+				showRooms,
+				showTeams,
+				setBlocks,
+				setRooms,
+				setTeams
       }
     },
   	methods: {
+      logoToShowNavigate () {
+        this.showNavigate()
+      },
    		loadMap: function () {
    			let format = 'image/png';
 				let bounds = [103.91759021426549, 30.741624632146454,
@@ -128,9 +144,11 @@
       let user = new ol.Feature({
         geometry: new ol.geom.Point(userCoor)
       })
+      user.setId(0)
       let thumbnail = new ol.Feature({
         geometry: new ol.geom.Point([103.93056, 30.74784])
       })
+      thumbnail.setId(1)
       thumbnail.setStyle(new ol.style.Style({
         image: new ol.style.Icon(({
           anchor: [0.5, 1],
@@ -163,9 +181,6 @@
       overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       map.on('click', function(evt) {
-        map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
-          areaImg.style.display = "block"
-        })
         that.closeInstruction()
         let view2 = map.getView()
         let view2Resolution = view2.getResolution()
@@ -174,10 +189,11 @@
           evt.coordinate, view2Resolution, view2.getProjection(),
           {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50})
         if (url) {
-          fetch(url).then(function(res) {
+          axios.get(url)
+          .then(function(res) {
             let brief, title
-            if (res.ok) {
-              res.json().then(function (data) {
+            let data = res.data
+            console.log(data)
                 switch(data.features[0].properties.refname || data.features[1].properties.refname) {
                   case "1号楼":
                     brief = that.getBrief(0)
@@ -246,14 +262,24 @@
                   default:
                     break
                 }
-              })
-            }
-          }, function(e) {
+          })
+          .catch(function(e) {
             console.log(e)
           })
         }
-
+        map.forEachFeatureAtPixel(evt.pixel, function (feature, layer) {
+          if (feature.getId() == 1) {
+            areaImg.style.display = "block"
+          }
+        })
       });
+      axios.get('http://192.168.0.113:8080/test').then(function (res) {
+				let data = res.data.data
+				that.setBlocks(data.building)
+				that.setRooms(data.room)
+				that.setTeams(data.team)
+				that.showBlocks()
+			})
     }
   }
 </script>
@@ -377,5 +403,14 @@
     font-size: 20px;
     line-height: 20px;
     text-align: center;
+  }
+  .navigateLogo {
+    position: fixed;
+    right: 10px;
+    top: 40%;
+    background: white;
+    border-radius: 100px;
+    width: 40px;
+    height: 40px;
   }
 </style>

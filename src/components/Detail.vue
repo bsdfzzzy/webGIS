@@ -5,8 +5,8 @@
 	</div>
 </template>
 <script>
-	import BriefDetail from './BriefDetail'
-	import MoreDetail from './MoreDetail'
+	import BriefDetail from './detail/BriefDetail'
+	import MoreDetail from './detail/MoreDetail'
 
 	export default {
 		components: {
@@ -18,6 +18,11 @@
 <style>
 	.detail {
 		width: 100%;
-		overflow: hidden;
+		overflow: scroll;
+		position: fixed;
+		z-index: 9999;
+		top: 0;
+		background: white;
+		height: 100%;
 	}
 </style>

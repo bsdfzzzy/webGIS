@@ -22,7 +22,8 @@
 </template>
 <script>
 	import { getBuilding } from '../getters'
-	import { showNavigate, setDestId, setDest, closeInstruction } from '../actions/components'
+	import { showNavigate, setDest } from '../actions/navigate'
+	import { setDestId, closeInstruction } from '../actions/instruction' 
 	import { setDirectionCoordinate } from '../actions/coordinate'
 
 	export default {
@@ -71,7 +72,8 @@
 		margin: auto;
 		left: 0;
 		right: 0;
-		background: rgba(52, 164, 228, 0.2);
+		background: white;
+		border: 1px solid #aaa;
 	}
 	.brief {
 		position: relative;

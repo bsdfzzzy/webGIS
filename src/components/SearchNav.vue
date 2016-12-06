@@ -1,67 +1,92 @@
 <template>
 	<div class="searchNav">
-		<div class="slideDown" @click="displayMenu">
-			分类
-		</div>
-		<div class="category" id="category" style="display: none;">
-			<ul>
-				<li class="categoryName" @click="displayChildMenu">
-					分类一
-					<ul class="smallCategory"  style="display: none;">
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-					</ul>
-				</li>
-				<li class="categoryName active" @click="displayChildMenu">
-					分类一
-					<ul class="smallCategory" style="display: none;">
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-					</ul>
-				</li>
-				<li class="categoryName" @click="displayChildMenu">
-					分类一
-					<ul class="smallCategory"  style="display: none;">
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-						<li class="smallCategoryName">分类二</li>
-					</ul>
-				</li>
-			</ul>
-		</div>
+		<type-button v-if="whethershowtypebutton"></type-button>
 		<div class="searchBox">
-			<input type="search" name="searchBox" class="searchColumn">
+			<input type="search" name="searchBox" class="searchColumn" @click="showsearchfloat" v-model="searchValue" @keyup.enter="searchResult">
 		</div>
-		<div class="choose">
-			-
-		</div>
+		<list-button :rightType="righttype"></list-button>
+		<home-page-button :rightType="righttype"></home-page-button>
+		<back-button :rightType="righttype"></back-button>
 	</div>
 </template>
 <script>
+	import { showSearchFloat } from '../actions/searchFloat'
+	import { closeSearchNav } from '../actions/searchNav'
+    import { setPromptDisplay, showPrompt, closePrompt } from '../actions/prompt'
+	import { showHot, closeHot } from '../actions/hot'
+	import { setSearchResult, showSearchResult } from '../actions/searchResult'
+	import { getListAll, getPromptDisplay } from '../getters'
+	import TypeButton from './searchNav/TypeButton'
+	import ListButton from './searchNav/ListButton'
+	import HomePageButton from './searchNav/HomePageButton'
+	import BackButton from './searchNav/BackButton'
+
 	export default {
-		methods: {
-			displayChildMenu (e) {
-				var uls = document.getElementsByClassName('smallCategory');
-				for (var j in uls) {
-					if(uls[j].style) {
-						uls[j].style.display = "none";
-					}
-					
-				}
-				for (var i in e.target.childNodes) {
-					if (e.target.childNodes[i].tagName == 'UL') {
-						e.target.childNodes[i].style.display = "block";
-					}
-				}
+		props: ['whethershowtypebutton', 'righttype'],
+		components: {
+			TypeButton,
+			ListButton,
+			HomePageButton,
+			BackButton
+		},
+		vuex: {
+			getters: {
+				getListAll,
+				getPromptDisplay
 			},
-			displayMenu (e) {
-				var menu = document.getElementById("category");
-				if (menu.style.display == "none") {
-					menu.style.display = "block";
-				} else if (menu.style.display == "block") {
-					menu.style.display = "none";
+			actions: {
+				showSearchFloat,
+				showHot,
+				closeHot,
+				setPromptDisplay,
+				showPrompt,
+				closePrompt,
+				closeSearchNav,
+				setSearchResult,
+				showSearchResult
+			}
+		},
+		data () {
+			return {
+				searchValue: ""
+			}
+		},
+		methods: {
+			closeHots: function (e) {
+				console.log(e)
+			},
+			showsearchfloat: function () {
+				this.showSearchFloat()
+				this.closeSearchNav()
+			},
+			searchResult (e) {
+				let that = this
+				if (e.keyCode === 13) {
+					let result = []
+					that.getPromptDisplay.map(function (item) {
+						result.push(item)
+					})
+					that.setSearchResult(result)
+					that.showSearchResult()
+				}
+			}
+		},
+		watch: {
+			searchValue: function (newSearchValue) {
+				if (newSearchValue == "") {
+					this.showHot()
+					this.closePrompt()
+				} else {
+					this.closeHot()
+					let pushDisplay = []
+					this.getListAll.map(function (item) {
+						let matcher = eval('/' + newSearchValue + '/')
+  						if (item.title.match(matcher)) {
+  							pushDisplay.push(item)
+  						}
+					})
+					this.setPromptDisplay(pushDisplay)
+					this.showPrompt()
 				}
 			}
 		}
@@ -77,62 +102,12 @@
 		height: 40px;
 		background-color: #34a4e4;
 		z-index: 1000;
-	}
-	.slideDown {
-		float: left;
-		width: 20%;
-		height: 100%;
-		text-align: center;
-		color: white;
-		line-height: 40px;
-		cursor: pointer;
-	}
-	.category {
-		position: absolute;
-		top: 40px;
-		left: 0px;
-		width: 70px;
-	}
-	.categoryName {
-		width: 100%;
-		height: 30px;
-		text-align: center;
-		line-height: 30px;
-		background: white;
-		color: #4f5f6f;
-		border: 1px solid #ddd;
-		position: relative;
-	}
-	.active {
-		background: #34a4e4 !important;
-		color: white !important;
-	}
-	.smallCategory {
-		position: absolute;
-		top: 0;
-		left: 102%;
-		width: 70px;
-		list-style: none;
-	}
-	.hide {
-		display: none !important;
-	}
-	.smallCategoryName {
-		width: 100%;
-		height: 30px;
-		text-align: center;
-		line-height: 30px;
-		background: white;
-		color: #4f5f6f;
-		border: 1px solid #ddd;
-	}
-	.smallActive {
-		background: #34a4e4 !important;
-		color: white !important;
+		display: flex;
 	}
 	.searchBox {
 		float: left;
-		width: 70%;
+		flex-basis: 60%;
+		flex-grow: 2;
 		height: 100%;
 		text-align: center;
 	}
@@ -143,9 +118,5 @@
 		border-radius: 15px;
 		border: 1px;
 		outline: none;
-	}
-	.choose {
-		text-align: center;
-		line-height: 40px;
 	}
 </style>

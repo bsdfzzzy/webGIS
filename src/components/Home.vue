@@ -1,9 +1,13 @@
 <template>
 	<div class="home">
-		<!-- <search-nav></search-nav> -->
+		<search-nav :whetherShowTypeButton="show" :rightType="type" v-if="getShowSearchNav"></search-nav>
 		<map-container></map-container>
-		<instruction v-if="showInstruction" transition="expand" :title="getBriefTitle" :content="getBriefContent"></instruction>
-		<navigate v-if="showNavigate" transition="expand"></navigate>
+		<instruction v-if="getShowInstruction" transition="expand" :title="getBriefTitle" :content="getBriefContent"></instruction>
+		<navigate v-if="getShowNavigate" transition="expand"></navigate>
+		<search-float v-if="getShowSearchFloat" transition="expand"></search-float>
+		<search-result v-if="getShowSearchResult"></search-result>
+		<item-list v-if="getShowList"></item-list>
+		<detail v-if="getShowDetail"></detail>
 	</div>
 </template>
 <script>
@@ -11,24 +15,43 @@
 	import SearchNav from './SearchNav'
 	import Instruction from './Instruction'
 	import Navigate from './Navigate'
-	import { showInstruction, showNavigate, getBriefContent, getBriefTitle } from '../getters'
+	import SearchFloat from './SearchFloat'
+	import SearchResult from './SearchResult'
+	import ItemList from './ItemList'
+	import Detail from './Detail'
+	import { getShowDetail, getShowSearchNav, getShowList, getShowSearchResult ,getShowInstruction, getShowNavigate, getBriefContent, getBriefTitle, getShowSearchFloat, getWhetherShowTypeButton } from '../getters'
 
 	export default {
 		components: {
 			MapContainer,
-			//SearchNav,
+			SearchNav,
 			Instruction,
 			Navigate,
+			SearchFloat,
+			SearchResult,
+			ItemList,
+			Detail
 		},
 		vuex: {
 			getters: {
-				showInstruction,
-				showNavigate,
+				getShowInstruction,
+				getShowNavigate,
 				getBriefTitle,
-				getBriefContent
+				getBriefContent,
+				getShowSearchFloat,
+				getShowSearchResult,
+				getShowList,
+				getShowSearchNav,
+				getShowDetail
 			},
 			actions: {
 				
+			}
+		},
+		data () {
+			return {
+				show: true,
+				type: "listButton"
 			}
 		}
 	}

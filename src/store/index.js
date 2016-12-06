@@ -9,7 +9,7 @@ import Vuex from 'vuex'
  * 需要加载模块，使用统一入口的方式来组织代码的导出
  * 模块的话，还是显示的导出一下，毕竟也不是经常修改
 */
-import { coordinate, components, map } from './modules'
+import { detail, prompt, list, hot,coordinate, navigate, instruction, map, searchFloat, roomList, searchResult, searchNav } from './modules'
 
 Vue.use(Vuex)
 
@@ -21,7 +21,15 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     coordinate,
-    components,
-    map
+    navigate,
+    instruction,
+    map,
+    searchFloat,
+    searchNav,
+    searchResult,
+    hot,
+    list,
+    prompt,
+    detail
   }
 })
