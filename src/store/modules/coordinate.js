@@ -236,12 +236,9 @@ const state = {
 
 let span = document.getElementById('initData')
 let defaultCoor = JSON.parse(span.innerHTML)
-for (let item of state.buildingCoordinate) {
-  if (item.coordinate[0] == Number(defaultCoor.longitude) && item.coordinate[1] == Number(defaultCoor.lantitude)) {
-    state.userCoordinate = [Number(defaultCoor.longitude), Number(defaultCoor.lantitude)]
-    state.start = item.coordinateToNavigate
-    break
-  }
+if (defaultCoor) {
+  state.userCoordinate = [Number(defaultCoor.longitude), Number(defaultCoor.lantitude)]
+  state.start = [Number(defaultCoor.longitude), Number(defaultCoor.lantitude)]
 }
 
 const mutations = {
