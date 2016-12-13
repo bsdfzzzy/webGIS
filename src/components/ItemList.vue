@@ -7,7 +7,7 @@
 			<div class="navItem" @click="showTeams">团队</div>
 		</div>
 		<div class="listContent">
-			<item v-for="display in getListDisplay" :img="display.img" :title="display.title" :content="display.desc" :id="display.id"></item>
+			<item v-for="display in getListDisplay" :img="display.img" :title="display.title" :content="display.desc" :id="display.id" :picture="display.picture"></item>
 		</div>
 	</div>
 </template>
@@ -36,6 +36,9 @@
 				setTeams
 			}
 		},
+		ready () {
+			this.showBlocks()
+		}
 	}
 </script>
 <style>

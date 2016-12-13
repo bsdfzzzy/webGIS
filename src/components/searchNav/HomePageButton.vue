@@ -1,6 +1,6 @@
 <template>
     <div class="listButton" v-if="righttype == 'homePageButton'" @click="closeAll">
-	    <img src="/static/img/home.png" width="30px" height="30px">
+	    <img src="/static/img/cancel.png" width="30px" height="30px">
 	</div>
 </template>
 <script>

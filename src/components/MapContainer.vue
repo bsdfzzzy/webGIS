@@ -82,8 +82,8 @@
         let building = this.getBuilding
         for (let item of building) {
           if (item.id == id) {
-            console.log(item.name)
-            return item.name
+            console.log(item.title)
+            return item.title
           }
         }
       }
@@ -145,6 +145,13 @@
         geometry: new ol.geom.Point(userCoor)
       })
       user.setId(0)
+      user.setStyle(new ol.style.Style({
+        image: new ol.style.Icon(({
+          anchor: [0.5, 0.5],
+          src: '/static/img/user.png',
+          scale: 0.3
+        }))
+      }))
       let thumbnail = new ol.Feature({
         geometry: new ol.geom.Point([103.93056, 30.74784])
       })
@@ -273,12 +280,20 @@
           }
         })
       });
-      axios.get('http://192.168.0.113:8080/test').then(function (res) {
+      axios.get('http://map.gugoo.cc/get_all_detail').then(function (res) {
 				let data = res.data.data
+        data.building.map(function (item) {
+          item.type = "BUILDING"
+        })
+        data.room.map(function (item) {
+          item.type = "ROOM"
+        })
+        data.team.map(function (item) {
+          item.type = "TEAM"
+        })
 				that.setBlocks(data.building)
 				that.setRooms(data.room)
 				that.setTeams(data.team)
-				that.showBlocks()
 			})
     }
   }

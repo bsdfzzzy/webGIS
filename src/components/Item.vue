@@ -1,7 +1,7 @@
 <template>
 	<div class="item">
 		<div class="itemContentContainer">
-			<img :src="img" width="60px" height="60px" class="itemContentImg">
+			<img :src="picture" width="60px" height="60px" class="itemContentImg">
 			<p class="itemContentTitle"><strong>{{title}}</strong></p>
 			<p class="itemContentDesc">{{content}}</p>
 		</div>
@@ -22,7 +22,7 @@
 	import { showNavigate } from '../actions/navigate'
 
 	export default {
-		props: ['img', 'title', 'content', 'id'],
+		props: ['img', 'title', 'content', 'id', 'picture'],
 		vuex: {
 			getters: {
 				getListAll

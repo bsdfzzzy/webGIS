@@ -14,13 +14,13 @@
 				<div class="chooseStartBox" id="chooseStartBox" v-if="getShowChooseStart">
 					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
-						<li v-for="start in getShowStarts" @click="selectStart" data-id="{{start.id}}">{{start.name}}</li>
+						<li v-for="start in getShowStarts" @click="selectStart" data-id="{{start.id}}">{{start.title}}</li>
 					</ul>
 				</div>
 				<div class="chooseDirectionBox" id="chooseDirectionBox" v-if="getShowChooseDirection">
 					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
-						<li v-for="direction in getShowDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.name}}</li>
+						<li v-for="direction in getShowDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.title}}</li>
 					</ul>
 				</div>
 			</div>
@@ -29,7 +29,7 @@
 	</div>
 </template>
 <script>
-	import { getListAll, getShowChooseStart, getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, checkStart, getBuilding, getDisableButton } from '../getters'
+	import { getListTeams, getListRooms, getListBlocks, getListAll, getShowChooseStart, getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, checkStart, getBuilding, getDisableButton } from '../getters'
 	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, showPartialDirections } from '../actions/navigate'
 	import { setDestId } from '../actions/instruction'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
@@ -62,7 +62,10 @@
 				checkDest,
 				getBuilding,
 				getDisableButton,
-				getListAll
+				getListAll,
+				getListBlocks,
+				getListRooms,
+				getListTeams
 			},
 			actions: {
 				displayChooseStart,
@@ -143,7 +146,7 @@
 				this.closeChooseStart()
 				let startName = e.target.innerHTML
 				for (let item of this.getBuilding) {
-					if (item.name == startName) {
+					if (item.title == startName) {
 						this.setStartCoordinate(item.id)
 						this.setCheckStart(true)
 						return
@@ -155,7 +158,7 @@
 				this.closeChooseDirection()
 				let destName = e.target.innerHTML
 				for (let item of this.getBuilding) {
-					if (item.name == destName) {
+					if (item.title == destName) {
 						this.setDestCoordinate(item.id)
 						this.setCheckDest(true)
 						return
@@ -200,20 +203,25 @@
 				destPointInfo = this.getDest
 				let postData = []
 				if (startPointInfo.id) {
-					postData.push(Number(startPointInfo.id))
+					postData.push({
+						id: Number(startPointInfo.id),
+						category: startPointInfo.type
+					})
 				}
 				if (destPointInfo.id) {
-					postData.push(Number(destPointInfo.id))
+					postData.push({
+						id: Number(destPointInfo.id),
+						category: destPointInfo.type
+					})
 				}
-				// if (postData.length != 0) {
-				// 	let postDataJSON = JSON.stringify({
-				// 		ids: postData
-				// 	})
-				// 	axios.post('', postDataJSON).catch(function (e) {
-				// 		console.log(e)
-				// 	})
-				// }
-				console.log(postData)
+				if (postData.length != 0) {
+					let postDataJSON = JSON.stringify({
+						ids: postData
+					})
+					axios.post('http://map.gugoo.cc/record_search', postDataJSON).catch(function (e) {
+						console.log(e)
+					})
+				}
 				let startMarker = new ol.Feature({
         			type: 'iconStart',
         			geometry: new ol.geom.Point(startPoint),
@@ -268,7 +276,7 @@
 					this.showPartialStarts(newStart)
 				}
 				for (let item of this.getBuilding) {
-					if (item.name == newStart) {
+					if (item.title == newStart) {
 						this.setStartCoordinate(item.id)
 						this.setCheckStart(true)
 						return
@@ -284,7 +292,7 @@
 					this.showPartialDirections(newDirection)
 				}
 				for (let item of this.getBuilding) {
-					if (item.name == newDirection) {
+					if (item.title == newDirection) {
 						this.setDirectionCoordinate(item.id)
 						this.setCheckDest(true)
 						return

@@ -23,7 +23,7 @@
 <script>
 	import { getBuilding } from '../getters'
 	import { showNavigate, setDest } from '../actions/navigate'
-	import { setDestId, closeInstruction } from '../actions/instruction' 
+	import { setDestId, closeInstruction } from '../actions/instruction'
 	import { setDirectionCoordinate } from '../actions/coordinate'
 
 	export default {
@@ -51,14 +51,13 @@
 			},
 			navigateToTheBuilding () {
 				for (let item of this.getBuilding) {
-					if (item.name == this.title) {
-						this.setDestId(item.id)
-						this.setDirectionCoordinate(item.id)
+					if (item.title == this.title) {
+						this.setDest(item)
+						this.setDirectionCoordinate(item.coordinateToNavigate)
 						break
 					}
 				}
 				this.closeInstruction()
-				this.setDest(this.title)
 				this.showNavigate()
 			}
 		}
