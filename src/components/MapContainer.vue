@@ -26,7 +26,8 @@
     setF4Layer, setLayers } from '../actions/map'
   import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
-    getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers } from '../getters'
+    getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
+    getListAll } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -43,7 +44,8 @@
         getF2Layer,
         getF3Layer,
         getF4Layer,
-        getLayers
+        getLayers,
+        getListAll
       },
       actions: {
         showInstruction,
@@ -108,7 +110,6 @@
         }
       },
       changeMapFloor (e) {
-        console.log(window.map.layers)
         let content = e.target.innerHTML
         switch(content) {
           case '1F': 
@@ -138,24 +139,28 @@
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f1_layer)
+          console.log("floor1")
         } else if (floor == 2) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f2_layer)
+          console.log("floor2")
         } else if (floor == 3) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f3_layer)
+          console.log("floor3")
         } else if (floor == 4) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f4_layer)
+          console.log("floor4")
         }
       }
     },
@@ -305,6 +310,15 @@
       that.setF2Layer(f2_layer)
       that.setF3Layer(f3_layer)
       that.setF4Layer(f4_layer)
+      // f1_layer.setZIndex(99)
+      // f2_layer.setZIndex(99)
+      // f3_layer.setZIndex(99)
+      // f4_layer.setZIndex(99)
+      // f1_layer.setExtent([103.92656545078216, 30.757355540999242,103.92712937031598, 30.758423502907476])
+      // f2_layer.setExtent([103.92656545078216, 30.757355540999242,103.92712937031598, 30.758423502907476])
+      // f3_layer.setExtent([103.92656545078216, 30.757355540999242,103.92712937031598, 30.758423502907476])
+      // f4_layer.setExtent([103.92656545078216, 30.757355540999242,103.92712937031598, 30.758423502907476])
+
       switch(that.getMapFloor) {
         case 1:
           map.addLayer(f1_layer)
@@ -333,84 +347,49 @@
         that.closeInstruction()
         let view2 = map.getView()
         let view2Resolution = view2.getResolution()
-        let source2 = wms.getSource()
-        let url = source2.getGetFeatureInfoUrl(
-          evt.coordinate, view2Resolution, view2.getProjection(),
-          {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50})
+        let source2
+        let url
+        if (view2Resolution <= 0.000001341104507446289) {
+          switch(that.getMapFloor) {
+            case 1:
+              source2 = f1_layer.getSource()
+              break
+            case 2:
+              source2 = f2_layer.getSource()
+              break
+            case 3:
+              source2 = f3_layer.getSource()
+              break
+            case 4:
+              source2 = f4_layer.getSource()
+              break
+            default: 
+              break
+          }
+          url = source2.getGetFeatureInfoUrl(
+            evt.coordinate, view2Resolution, view2.getProjection(),
+            {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50}
+          )
+        } else {
+          source2 = wms.getSource()
+          url = source2.getGetFeatureInfoUrl(
+            evt.coordinate, view2Resolution, view2.getProjection(),
+            {'INFO_FORMAT': 'application/json', 'FEATURE_COUNT': 50})
+        }
         if (url) {
           axios.get(url)
           .then(function(res) {
             let brief, title
             let data = res.data
-            console.log(data)
-                switch(data.features[0].properties.refname || data.features[1].properties.refname) {
-                  case "1号楼":
-                    brief = that.getBrief(0)
-                    title = that.getTitle(0)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "2号楼":
-                    brief = that.getBrief(1)
-                    title = that.getTitle(1)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "3号楼":
-                    brief = that.getBrief(2)
-                    title = that.getTitle(2)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate
-                    that.showInstruction()
-                    break
-                  case "4号楼":
-                    brief = that.getBrief(3)
-                    title = that.getTitle(3)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "5号楼":
-                    brief = that.getBrief(4)
-                    title = that.getTitle(4)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "6号楼":
-                    brief = that.getBrief(5)
-                    title = that.getTitle(5)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "7号楼":
-                    brief = that.getBrief(6)
-                    title = that.getTitle(6)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  case "8号楼":
-                    brief = that.getBrief(7)
-                    title = that.getTitle(7)
-                    that.changeTitle(title)
-                    that.changeBrief(brief)
-                    that.closeNavigate()
-                    that.showInstruction()
-                    break
-                  default:
-                    break
+            let uid = data.features[0].properties.Unique_ID
+            for (let item of that.getListAll) {
+              if (item) {
+                if (item.id == uid) {
+                  that.changeBrief(item.desc)
+                  that.changeTitle(item.title)
                 }
+              } 
+            }
           })
           .catch(function(e) {
             console.log(e)
@@ -424,18 +403,28 @@
       });
       axios.get('http://map.gugoo.cc/get_all_detail').then(function (res) {
 				let data = res.data.data
-        data.building.map(function (item) {
-          item.type = "BUILDING"
-        })
-        data.room.map(function (item) {
-          item.type = "ROOM"
-        })
-        data.team.map(function (item) {
-          item.type = "TEAM"
-        })
-				that.setBlocks(data.building)
-				that.setRooms(data.room)
-				that.setTeams(data.team)
+        let buildings, rooms, teams
+        if (data.BUILDING) {
+          buildings = data.BUILDING
+          buildings.map(function (item) {
+            item.type = "BUILDING"
+          })
+        }
+        if (data.ROOM) {
+          rooms = data.ROOM
+          rooms.map(function (item) {
+            item.type = "ROOM"
+          })
+        }
+        if (data.TEAM) {
+          teams = data.TEAM
+          teams.map(function (item) {
+            item.type = "TEAM"
+          })
+        }
+				that.setBlocks(buildings)
+				that.setRooms(rooms)
+				that.setTeams(teams)
 			})
     }
   }

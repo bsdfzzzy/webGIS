@@ -21,7 +21,7 @@
 	</div>
 </template>
 <script>
-	import { getBuilding } from '../getters'
+	import { getListAll } from '../getters'
 	import { showNavigate, setDest } from '../actions/navigate'
 	import { setDestId, closeInstruction } from '../actions/instruction'
 	import { setDirectionCoordinate } from '../actions/coordinate'
@@ -30,7 +30,7 @@
 		props: ['title', 'content'],
 		vuex: {
 			getters: {
-				getBuilding
+				getListAll
 			},
 			actions: {
 				showNavigate,
@@ -50,7 +50,7 @@
 				this.show = !this.show
 			},
 			navigateToTheBuilding () {
-				for (let item of this.getBuilding) {
+				for (let item of this.getListAll) {
 					if (item.title == this.title) {
 						this.setDest(item)
 						this.setDirectionCoordinate(item.coordinateToNavigate)
