@@ -8,11 +8,12 @@
     <img src="/static/img/area.jpg">
     <div id="closeImg">×</div>
   </div>
-  <!-- <ul class="chooseFloor">
-    <li class="floor active">1F</li>
-    <li class="floor">2F</li>
-    <li class="floor">3F</li>
-  </ul> -->
+  <ul class="chooseFloor" id="chooseFloor">
+    <li class="floor{{getMapFloor == 1 ? ' active' : ''}}" @click="changeMapFloor">1F</li>
+    <li class="floor{{getMapFloor == 2 ? ' active' : ''}}" @click="changeMapFloor">2F</li>
+    <li class="floor{{getMapFloor == 3 ? ' active' : ''}}" @click="changeMapFloor">3F</li>
+    <li class="floor{{getMapFloor == 4 ? ' active' : ''}}" @click="changeMapFloor">4F</li>
+  </ul>
   <div class="navigateLogo" @click="logoToShowNavigate" v-if="getShowNavigateLogo">
     <img src="/static/img/navi.png" width="40px" height="40px">
   </div>
@@ -21,8 +22,11 @@
 	import ol from 'openlayers/dist/ol.js'
   import { showInstruction, closeInstruction, changeBrief, changeTitle } from '../actions/instruction'
   import { showNavigate, closeNavigate } from '../actions/navigate'
+  import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
+    setF4Layer, setLayers } from '../actions/map'
   import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
-  import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo } from '../getters'
+  import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
+    getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -31,7 +35,15 @@
         getUserCoordinate,
         getBuilding,
         getPathLayer,
-        getShowNavigateLogo
+        getShowNavigateLogo,
+        getMapFloor,
+        getMapLayer,
+        getVectorLayer,
+        getF1Layer,
+        getF2Layer,
+        getF3Layer,
+        getF4Layer,
+        getLayers
       },
       actions: {
         showInstruction,
@@ -45,7 +57,15 @@
 				showTeams,
 				setBlocks,
 				setRooms,
-				setTeams
+				setTeams,
+        changeFloor,
+        setMapLayer,
+        setVectorLayer,
+        setF1Layer,
+        setF2Layer,
+        setF3Layer,
+        setF4Layer,
+        setLayers
       }
     },
   	methods: {
@@ -86,14 +106,56 @@
             return item.title
           }
         }
+      },
+      changeMapFloor (e) {
+        console.log(window.map.layers)
+        let content = e.target.innerHTML
+        switch(content) {
+          case '1F': 
+            this.changeFloor(1)
+            break
+          case '2F': 
+            this.changeFloor(2)
+            break
+          case '3F': 
+            this.changeFloor(3)
+            break
+          case '4F': 
+            this.changeFloor(4)
+            break
+        }
       }
     },
     watch: {
-      getPathLayer: function (newPathLayer) {
-        if (newPathLayer == "") {
-          console.log()
-        } else {
-          console.log("bbb")
+      getMapFloor: function (floor) {
+        let f1_layer = this.getF1Layer
+        let f2_layer = this.getF2Layer
+        let f3_layer = this.getF3Layer
+        let f4_layer = this.getF4Layer
+        if (floor == 1) {
+          window.map.removeLayer(f1_layer)
+          window.map.removeLayer(f4_layer)
+          window.map.removeLayer(f2_layer)
+          window.map.removeLayer(f3_layer)
+          window.map.addLayer(f1_layer)
+        } else if (floor == 2) {
+          window.map.removeLayer(f1_layer)
+          window.map.removeLayer(f4_layer)
+          window.map.removeLayer(f2_layer)
+          window.map.removeLayer(f3_layer)
+          window.map.addLayer(f2_layer)
+        } else if (floor == 3) {
+          window.map.removeLayer(f1_layer)
+          window.map.removeLayer(f4_layer)
+          window.map.removeLayer(f2_layer)
+          window.map.removeLayer(f3_layer)
+          window.map.addLayer(f3_layer)
+        } else if (floor == 4) {
+          window.map.removeLayer(f1_layer)
+          window.map.removeLayer(f4_layer)
+          window.map.removeLayer(f2_layer)
+          window.map.removeLayer(f3_layer)
+          window.map.addLayer(f4_layer)
         }
       }
     },
@@ -122,13 +184,16 @@
       let bounds = [103.91759021426549, 30.741624632146454,
                     103.93913373188894, 30.76281872384709]
       let resolutions = [
-        2.9411764705882e-5,
-        0.0000214576721191406,
-        0.0000107288360595703,
-        0.00000536441802978515,
-        0.000002682209014892575,
-        0.0000013411045074462876,
-        6.705522537231438e-7,
+        0.0000858306884765625,
+        0.00004291534423828125,
+        0.000021457672119140625,
+        0.000010728836059570312,
+        0.000005364418029785156,
+        0.000002682209014892578,
+        0.000001341104507446289,
+        6.705522537231445e-7,
+        3.3527612686157227e-7,
+        1.6763806343078613e-7
       ];
       let userCoor = this.getUserCoordinate
       let projection = new ol.proj.Projection({
@@ -170,16 +235,17 @@
         source: vectorSource
       });
       let wms = this.loadMap()
+      that.setMapLayer(wms)
+      that.setVectorLayer(vectorLayer)
+      that.setLayers()
       window.map = new ol.Map({
         controls: ol.control.defaults({
           attribution: false
         }),
         target: 'map',
         overlays: [overlay],
-        layers: [
-          wms,
-          vectorLayer
-        ],
+        layers: that.getLayers
+        ,
         view: view
       })
       map.getView().fit(bounds, map.getSize())
@@ -187,6 +253,82 @@
       view.setZoom(3)
       overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
+      let f1_layer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://geoserver.gugoo.cc/geoserver/UESTC/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.1.1',  
+            'STYLES': '',
+            'LAYERS': 'UESTC:UESTC_F1',
+          }
+        })
+      })
+      let f2_layer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://geoserver.gugoo.cc/geoserver/UESTC/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.1.1',  
+            'STYLES': '',
+            'LAYERS': 'UESTC:UESTC_F2',
+          }
+        })
+      })
+      let f3_layer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://geoserver.gugoo.cc/geoserver/UESTC/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.1.1',  
+            'STYLES': '',
+            'LAYERS': 'UESTC:UESTC_F3',
+          }
+        })
+      })
+      let f4_layer = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+          ratio: 1,
+          url: 'http://geoserver.gugoo.cc/geoserver/UESTC/wms',
+          params: {
+            'FORMAT': 'image/png',
+            'VERSION': '1.1.1',  
+            'STYLES': '',
+            'LAYERS': 'UESTC:UESTC_F4',
+          }
+        })
+      })
+      that.setF1Layer(f1_layer)
+      that.setF2Layer(f2_layer)
+      that.setF3Layer(f3_layer)
+      that.setF4Layer(f4_layer)
+      switch(that.getMapFloor) {
+        case 1:
+          map.addLayer(f1_layer)
+          break
+        case 2:
+          map.addLayer(f2_layer)
+          break
+        case 3:
+          map.addLayer(f3_layer)
+          break
+        case 4:
+          map.addLayer(f4_layer)
+          break
+        default: 
+          break
+      }
+      map.on('moveend', function (e) {
+        let view = map.getView()
+        let resolution = view.getResolution()
+        let ul_ = document.getElementById('chooseFloor')
+        if (resolution <= 0.000001341104507446289) {
+          ul_.style.display = 'block'
+        }
+      })
       map.on('click', function(evt) {
         that.closeInstruction()
         let view2 = map.getView()
@@ -338,6 +480,7 @@
     right: 10px;
     width: 28px;
     overflow: hidden;
+    display: none;
   }
   .floor {
     width: 100%;

@@ -149,3 +149,35 @@ export function getShowDetail (state) {
 export function getDetail (state) {
 	return state.detail.display
 }
+
+export function getMapFloor (state) {
+	return state.map.nowFloor
+}
+
+export function getMapLayer (state) {
+	return state.map.mapLayer
+}
+
+export function getVectorLayer (state) {
+	return state.map.VectorLayer
+}
+
+export function getF1Layer (state) {
+	return state.map.f1_layer
+}
+
+export function getF2Layer (state) {
+	return state.map.f2_layer
+}
+
+export function getF3Layer (state) {
+	return state.map.f3_layer
+}
+
+export function getF4Layer (state) {
+	return state.map.f4_layer
+}
+
+export function getLayers (state) {
+	return state.map.layers
+}

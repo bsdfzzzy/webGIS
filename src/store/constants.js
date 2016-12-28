@@ -5,6 +5,16 @@ export const CHANGE_BRIEF = 'CHANGE_BRIEF'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const SET_DESTID = 'SET_DESTID'
 
+//Map
+export const CHANGE_FLOOR = 'CHANGE_FLOOR'
+export const SET_MAPLAYER = 'SET_MAPLAYER'
+export const SET_VECTORLAYER = 'SET_VECTORLAYER'
+export const SET_F1LAYER = 'SET_F1LAYER'
+export const SET_F2LAYER = 'SET_F2LAYER'
+export const SET_F3LAYER = 'SET_F3LAYER'
+export const SET_F4LAYER = 'SET_F4LAYER'
+export const SET_LAYERS = 'SET_LAYERS'
+
 // Navigate
 export const SHOW_NAVIGATE = 'SHOW_NAVIGATE'
 export const CLOSE_NAVIGATE = 'CLOSE_NAVIGATE'

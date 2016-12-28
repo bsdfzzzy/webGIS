@@ -3,24 +3,45 @@ import coordinate from './coordinate'
 import ol from 'openlayers/dist/ol.js'
 
 const state = {
-	map: {
-  		mainMap: "",
-  		bounds: [103.91759021426549, 30.741624632146454,103.93913373188894, 30.76281872384709],
-  		resolutions: [
-  			2.9411764705882e-5,
-        	0.0000214576721191406,
-        	0.0000107288360595703,
-        	0.00000536441802978515,
-        	0.000002682209014892575,
-        	0.0000013411045074462876,
-        	6.705522537231438e-7,
-  		],
-  		pathLayer: ""
-  	}
+  	nowFloor: 1,
+	mapLayer: "",
+	vectorLayer: "",
+	f1_layer: "",
+	f2_layer: "",
+	f3_layer: "",
+	f4_layer: "",
+	layers: []
 }
 
 const mutations = {
-	
+	[types.CHANGE_FLOOR] (state, floor) {
+		state.nowFloor = floor
+	},
+	[types.SET_MAPLAYER] (state, layer) {
+		state.mapLayer = layer
+	},
+	[types.SET_VECTORLAYER] (state, layer) {
+		state.vectorLayer = layer
+	},
+	[types.SET_F1LAYER] (state, layer) {
+		state.f1_layer = layer
+	},
+	[types.SET_F2LAYER] (state, layer) {
+		state.f2_layer = layer
+	},
+	[types.SET_F3LAYER] (state, layer) {
+		state.f3_layer = layer
+	},
+	[types.SET_F4LAYER] (state, layer) {
+		state.f4_layer = layer
+	},
+	[types.SET_LAYERS] (state, f_layer) {
+		if (f_layer) {
+			state.layers = [state.mapLayer, state.vectorLayer, f_layer]
+		} else {
+			state.layers = [state.mapLayer, state.vectorLayer]
+		}
+	}
 }
 
 export default {
