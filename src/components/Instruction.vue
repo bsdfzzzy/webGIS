@@ -1,7 +1,9 @@
 <template>
 	<div class="instruction">
 		<div class="brief">
-			<!-- <div class="scroll" @click.stop.prevent="toggle"> + </div> -->
+			<div class="scroll" @click.stop.prevent="toggle">
+				<img src="/static/img/Panel_arrow-up.png" width="30px" />	
+			</div>
 			<div class="brief-ins">
 				<img src="/static/img/logo.jpg" width="60px" height="60px" class="brief-ins-logo">
 				<div class="brief-ins-content">
@@ -9,10 +11,10 @@
 					<p style="font-size: 13px;">{{getIntro.desc}}</p>
 				</div>	
 			</div>
-			<!-- <div class="menu">
-				<div class="detail">详情</div>
-				<div class="panorama">全景</div>
-			</div> -->
+			 <div class="menu">
+				<div class="" @click="showItsDetail">详情</div>
+				<div class="panorama" @click="getIntoBuilding">室内</div>
+			</div> 
 			<div class="navigateButton" @click="navigateToTheBuilding">
 				<img src="/static/img/navi.png" width="65px" height="65px">
 			</div>
@@ -25,6 +27,7 @@
 	import { showNavigate, setDest } from '../actions/navigate'
 	import { setDestId, closeInstruction } from '../actions/instruction'
 	import { setDirectionCoordinate } from '../actions/coordinate'
+	import { showDetail, setDisplayDetail } from '../actions/detail'
 
 	export default {
 		vuex: {
@@ -37,7 +40,9 @@
 				setDest,
 				setDestId,
 				setDirectionCoordinate,
-				closeInstruction
+				closeInstruction,
+				showDetail,
+				setDisplayDetail
 			}
 		},
 		data () {
@@ -60,6 +65,14 @@
 				// }
 				this.closeInstruction()
 				this.showNavigate()
+			},
+			showItsDetail () {
+				let intro = this.getIntro
+				this.setDisplayDetail(intro)
+				this.showDetail()
+			},
+			getIntoBuilding () {
+				
 			}
 		}
 	}
@@ -78,11 +91,16 @@
 	.brief {
 		position: relative;
 		min-height: 100px;
-		padding-top: 20px;
+		padding-top: 10px;
 	}
 	.scroll {
 		height: 20px;
 		width: 100%;
+		text-align: center;
+	}
+	.scroll img {
+		margin-left: auto;
+		margin-right: auto;
 	}
 	.brief-ins {
 		box-sizing: border-box;
@@ -135,7 +153,7 @@
 		width: 65px;
 		box-sizing: border-box;
 		right: 20px;
-		top: -33px;
+		top: -40px;
 		z-index: 1000;
 		border-radius: 100px;
 		text-align: center;
