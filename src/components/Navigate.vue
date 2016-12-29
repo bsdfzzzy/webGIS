@@ -29,8 +29,14 @@
 	</div>
 </template>
 <script>
-	import { getListTeams, getListRooms, getListBlocks, getListAll, getShowChooseStart, getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, checkStart, getBuilding, getDisableButton } from '../getters'
-	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, showPartialDirections } from '../actions/navigate'
+	import { getListTeams, getListRooms, getListBlocks, getListAll, getShowChooseStart, 
+		getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, 
+		getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, 
+		checkStart, getBuilding, getDisableButton, getRoute, getMapFloor } from '../getters'
+	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, 
+		disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, 
+		closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, 
+		showPartialDirections, setRoute } from '../actions/navigate'
 	import { setDestId } from '../actions/instruction'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
 	import { showSearchFloat, choosingStart, choosingDest, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
@@ -65,7 +71,9 @@
 				getListAll,
 				getListBlocks,
 				getListRooms,
-				getListTeams
+				getListTeams,
+				getRoute,
+				getMapFloor
 			},
 			actions: {
 				displayChooseStart,
@@ -91,7 +99,8 @@
 				choosingDest,
 				notChoosingStart,
 				notChoosingDest,
-				showSearchFloat
+				showSearchFloat,
+				setRoute
 			}
 		},
 		methods: {
@@ -176,31 +185,38 @@
 				}
 				let startPoint = this.getStartCoordination
 				let destPoint = this.getDirectionCoordination
+				let startPointInfo = this.getStart
+				let destPointInfo = this.getDest
+				// let startPointId, descPointId
 				let popup = document.getElementById("popup")
 				popup.style.display = "none"
-				axios.get('http://map-php.gugoo.cc/index.php?x1=' + startPoint[0] + '&y1=' + startPoint[1] + '&x2=' + destPoint[0] + '&y2=' + destPoint[1]).then(function (res) {
-					let lineFeature = new ol.Feature({
-						geometry: new ol.geom.LineString(res.data.coordinates)
-					})
-					let lineSource = new ol.source.Vector({
-						features: [lineFeature]
-					})
-					window.pathResult = new ol.layer.Vector({
-						source: lineSource,
-						style: new ol.style.Style({
-							stroke: new ol.style.Stroke({
-								width: 3,
-								color: [255, 0, 0, 0.8]
+				axios.get('http://map.gugoo.cc/navigate?start_uid=' + startPointInfo.unique_id + '&finish_uid=' + destPointInfo.unique_id).then(function (res) {
+					that.setRoute(res.data.coordinates)
+					let nowFloor = that.getMapFloor
+					let tempLine
+					if (res.data.coordinates[nowFloor - 1]) {
+						tempLine = res.data.coordinates[nowFloor - 1]
+					
+						let lineFeature = new ol.Feature({
+							geometry: new ol.geom.LineString(tempLine)
+						})
+						let lineSource = new ol.source.Vector({
+							features: [lineFeature]
+						})
+						window.pathResult = new ol.layer.Vector({
+							source: lineSource,
+							style: new ol.style.Style({
+								stroke: new ol.style.Stroke({
+									width: 3,
+									color: [255, 0, 0, 0.8]
+								})
 							})
 						})
-					})
-					map.addLayer(pathResult)
+						map.addLayer(pathResult)
+					}
 				}).catch(function (e) {
 					console.log(e)
-				})
-				let startPointInfo = null, destPointInfo = null
-				startPointInfo = this.getStart
-				destPointInfo = this.getDest
+				})				
 				let postData = []
 				if (startPointInfo.id) {
 					postData.push({
@@ -222,18 +238,8 @@
 						console.log(e)
 					})
 				}
-				let startMarker = new ol.Feature({
-        			type: 'iconStart',
-        			geometry: new ol.geom.Point(startPoint),
-        			name: "startMarker"
-      			});
-      			startMarker.setId(2)
-      			let endMarker = new ol.Feature({
-        			type: 'iconDest',
-        			geometry: new ol.geom.Point(destPoint),
-        			name: "endMarker"
-      			});
-      			endMarker.setId(3)
+				let view = window.map.getView()
+				let resolution = view.getResolution()				
       			let styles = {
         			'route': new ol.style.Style({
           				stroke: new ol.style.Stroke({
@@ -255,16 +261,30 @@
           				})
         			})
       			}
-      			window.path = new ol.layer.Vector({
-        			source: new ol.source.Vector({
-          				features: [startMarker, endMarker]
-        			}),
-        			style: function(feature) {
-          				return styles[feature.get('type')];
-        			}
-      			});
+				if (resolution > 0.000001341104507446289) {
+					let startMarker = new ol.Feature({
+        				type: 'iconStart',
+        				geometry: new ol.geom.Point(startPointInfo.coordinate),
+        				name: "startMarker"
+      				});
+      				startMarker.setId(2)
+      				let endMarker = new ol.Feature({
+        				type: 'iconDest',
+        				geometry: new ol.geom.Point(destPointInfo.coordinate),
+        				name: "endMarker"
+      				});
+      				endMarker.setId(3)
+					window.path = new ol.layer.Vector({
+        				source: new ol.source.Vector({
+          					features: [startMarker, endMarker]
+        				}),
+        				style: function(feature) {
+          					return styles[feature.get('type')];
+        				}
+      				});
 
-				map.addLayer(path)
+					map.addLayer(path)
+				}
 			}
 		},
 		watch: {

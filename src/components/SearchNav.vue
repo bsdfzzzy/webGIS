@@ -81,9 +81,11 @@
 					let pushDisplay = []
 					this.getListAll.map(function (item) {
 						let matcher = eval('/' + newSearchValue + '/')
-  						if (item.title.match(matcher)) {
-  							pushDisplay.push(item)
-  						}
+						if (item) {
+							if (item.title.match(matcher)) {
+  								pushDisplay.push(item)
+  							}
+						}
 					})
 					this.setPromptDisplay(pushDisplay)
 					this.showPrompt()

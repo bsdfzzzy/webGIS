@@ -62,3 +62,7 @@ export const setCheckStart = ({dispatch}, ...args) => {
 export const setCheckDest = ({dispatch}, ...args) => {
 	return dispatch(types.SET_CHECKDEST, ...args)
 }
+
+export const setRoute = ({dispatch}, ...args) => {
+	return dispatch(types.SET_ROUTE, ...args)
+}

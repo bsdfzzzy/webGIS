@@ -4,7 +4,8 @@ const state = {
 	whetherShowInstruction: false,
 	title: "",
 	brief: "",
-    id: 0
+  id: 0,
+  intro: {}
 }
 
 const mutations = {
@@ -23,6 +24,9 @@ const mutations = {
   [types.SET_DESTID] (state, id) {
     state.id = id
   },
+  [types.SET_INTRO] (state, intro) {
+    state.intro = intro
+  }
 }
 
 export default {

@@ -15,7 +15,8 @@ const state = {
   	showDirections: [],
   	disableButton: false,
     checkStart: true,
-    checkDest: true
+    checkDest: true,
+    route: []
 }
 
 const mutations = {
@@ -76,17 +77,20 @@ const mutations = {
   		state.disableButton = false
   	}
   },
-  [types.SET_START] (state, str) {
-    state.start = str
+  [types.SET_START] (state, start) {
+    state.start = start
   },
-  [types.SET_DEST] (state, str) {
-    state.direction = str
+  [types.SET_DEST] (state, dest) {
+    state.direction = dest
   },
   [types.SET_CHECKSTART] (state, bol) {
     state.checkStart = bol
   },
   [types.SET_CHECKDEST] (state, bol) {
     state.checkDest = bol
+  },
+  [types.SET_ROUTE] (state, route) {
+    state.route = route
   }
 }
 

@@ -20,14 +20,14 @@
 </template>
 <script>
 	import ol from 'openlayers/dist/ol.js'
-  import { showInstruction, closeInstruction, changeBrief, changeTitle } from '../actions/instruction'
+  import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro } from '../actions/instruction'
   import { showNavigate, closeNavigate } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
   import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
     getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
-    getListAll } from '../getters'
+    getListAll, getRoute } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -45,7 +45,8 @@
         getF3Layer,
         getF4Layer,
         getLayers,
-        getListAll
+        getListAll,
+        getRoute
       },
       actions: {
         showInstruction,
@@ -67,7 +68,8 @@
         setF2Layer,
         setF3Layer,
         setF4Layer,
-        setLayers
+        setLayers,
+        setIntro
       }
     },
   	methods: {
@@ -81,12 +83,12 @@
 				let wms = new ol.layer.Image({
           source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://geoserver.gugoo.cc/geoserver/gogomap/wms',
+            url: 'http://geoserver.gugoo.cc/geoserver/UESTC/wms',
             params: {
               'FORMAT': format,
               'VERSION': '1.1.1',  
               'STYLES': '',
-              'LAYERS': 'gogomap:gogo_original',
+              'LAYERS': 'UESTC:UESTC_outdoor',
             }
           })
         });
@@ -133,34 +135,49 @@
         let f2_layer = this.getF2Layer
         let f3_layer = this.getF3Layer
         let f4_layer = this.getF4Layer
+        let route = this.getRoute
         if (floor == 1) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f1_layer)
-          console.log("floor1")
         } else if (floor == 2) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f2_layer)
-          console.log("floor2")
         } else if (floor == 3) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f3_layer)
-          console.log("floor3")
         } else if (floor == 4) {
           window.map.removeLayer(f1_layer)
           window.map.removeLayer(f4_layer)
           window.map.removeLayer(f2_layer)
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f4_layer)
-          console.log("floor4")
+        }
+        if (route[Number(floor) - 1]) {
+          let lineFeature = new ol.Feature({
+						geometry: new ol.geom.LineString(route[Number(floor - 1)])
+					})
+					let lineSource = new ol.source.Vector({
+						features: [lineFeature]
+					})
+					window.pathResult = new ol.layer.Vector({
+						source: lineSource,
+						style: new ol.style.Style({
+							stroke: new ol.style.Stroke({
+								width: 3,
+								color: [255, 0, 0, 0.8]
+							})
+						})
+					})
+					map.addLayer(pathResult)
         }
       }
     },
@@ -341,6 +358,8 @@
         let ul_ = document.getElementById('chooseFloor')
         if (resolution <= 0.000001341104507446289) {
           ul_.style.display = 'block'
+        } else {
+          ul_.style.display = 'none'
         }
       })
       map.on('click', function(evt) {
@@ -382,11 +401,13 @@
             let brief, title
             let data = res.data
             let uid = data.features[0].properties.Unique_ID
+            console.log(data)
             for (let item of that.getListAll) {
               if (item) {
-                if (item.id == uid) {
-                  that.changeBrief(item.desc)
-                  that.changeTitle(item.title)
+                if (item.unique_id == uid) {
+                  that.setIntro(item)
+                  that.showInstruction()
+                  that.closeNavigate()
                 }
               } 
             }
@@ -404,20 +425,20 @@
       axios.get('http://map.gugoo.cc/get_all_detail').then(function (res) {
 				let data = res.data.data
         let buildings, rooms, teams
-        if (data.BUILDING) {
-          buildings = data.BUILDING
+        if (data.building) {
+          buildings = data.building
           buildings.map(function (item) {
             item.type = "BUILDING"
           })
         }
-        if (data.ROOM) {
-          rooms = data.ROOM
+        if (data.room) {
+          rooms = data.room
           rooms.map(function (item) {
             item.type = "ROOM"
           })
         }
-        if (data.TEAM) {
-          teams = data.TEAM
+        if (data.team) {
+          teams = data.team
           teams.map(function (item) {
             item.type = "TEAM"
           })

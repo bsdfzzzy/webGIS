@@ -5,7 +5,7 @@
             </div> -->
             <div class="promptContent">
                 <ul>
-                    <li v-for="item in getPromptDisplay" data-id="{{item.id}}" @click="search">
+                    <li v-for="item in getPromptDisplay" data-id="{{item.unique_id}}" @click="search">
                         <p class="promptName">{{item.title}}</p>
                         <p class="promptDesc"></p>
                     </li>
@@ -59,9 +59,11 @@
                 }
                 if (this.getWhetherChoosingStart) {
                     that.getListAll.map(function (item, index) {
-                        if (item.id == id) {
-                            that.setStartCoordinate(item.coordinate)
-                            that.setStart(item)
+                        if (item) {
+                            if (item.unique_id == id) {
+                                that.setStartCoordinate(item.coordinate)
+                                that.setStart(item)
+                            }
                         }
                     })
                     this.showNavigate()
@@ -70,9 +72,11 @@
                     this.closeSearchFloat()
                 } else if (this.getWhetherChoosingDest) {
                     that.getListAll.map(function (item, index) {
-                        if (item.id == id) {
-                            that.setDirectionCoordinate(item.coordinate)
-                            that.setDest(item)
+                        if (item) {
+                            if (item.id == id) {
+                                that.setDirectionCoordinate(item.coordinate)
+                                that.setDest(item)
+                            }   
                         }
                     })
                     this.showNavigate()
@@ -82,8 +86,10 @@
                 } else {
                     let results = []
                     that.getListAll.map(function (item, index) {
-                        if (item.id == id) {
-                            results.push(item)
+                        if (item) {
+                            if (item.id == id) {
+                                results.push(item)
+                            }
                         }
                     })
                     that.setSearchResult(results)

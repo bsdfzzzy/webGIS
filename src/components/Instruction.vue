@@ -5,8 +5,8 @@
 			<div class="brief-ins">
 				<img src="/static/img/logo.jpg" width="60px" height="60px" class="brief-ins-logo">
 				<div class="brief-ins-content">
-					<p><strong style="font-size:15px;">{{title}}</strong></p>
-					<p style="font-size: 13px;">{{content}}</p>
+					<p><strong style="font-size:15px;">{{getIntro.title}}</strong></p>
+					<p style="font-size: 13px;">{{getIntro.desc}}</p>
 				</div>	
 			</div>
 			<!-- <div class="menu">
@@ -21,16 +21,16 @@
 	</div>
 </template>
 <script>
-	import { getListAll } from '../getters'
+	import { getListAll, getIntro } from '../getters'
 	import { showNavigate, setDest } from '../actions/navigate'
 	import { setDestId, closeInstruction } from '../actions/instruction'
 	import { setDirectionCoordinate } from '../actions/coordinate'
 
 	export default {
-		props: ['title', 'content'],
 		vuex: {
 			getters: {
-				getListAll
+				getListAll,
+				getIntro
 			},
 			actions: {
 				showNavigate,
@@ -50,13 +50,14 @@
 				this.show = !this.show
 			},
 			navigateToTheBuilding () {
-				for (let item of this.getListAll) {
-					if (item.title == this.title) {
-						this.setDest(item)
-						this.setDirectionCoordinate(item.coordinateToNavigate)
-						break
-					}
-				}
+				this.setDest(this.getIntro)
+				// for (let item of this.getListAll) {
+				// 	if (item.unique_id == this.title) {
+				// 		this.setDest(item)
+				// 		this.setDirectionCoordinate(item.coordinateToNavigate)
+				// 		break
+				// 	}
+				// }
 				this.closeInstruction()
 				this.showNavigate()
 			}

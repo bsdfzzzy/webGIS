@@ -18,3 +18,7 @@ export const changeTitle = ({dispatch}, ...args) => {
 export const setDestId = ({dispatch}, ...args) => {
 	return dispatch(types.SET_DESTID, ...args)
 }
+
+export const setIntro = ({dispatch}, ...args) => {
+	return dispatch(types.SET_INTRO, ...args)
+}

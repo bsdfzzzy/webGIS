@@ -181,3 +181,11 @@ export function getF4Layer (state) {
 export function getLayers (state) {
 	return state.map.layers
 }
+
+export function getIntro (state) {
+	return state.instruction.intro
+}
+
+export function getRoute (state) {
+	return state.navigate.route
+}

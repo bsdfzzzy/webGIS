@@ -4,6 +4,7 @@ export const CLOSE_INSTRUCTION = 'CLOSE_INSTRUCTION'
 export const CHANGE_BRIEF = 'CHANGE_BRIEF'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const SET_DESTID = 'SET_DESTID'
+export const SET_INTRO = 'SET_INTRO'
 
 //Map
 export const CHANGE_FLOOR = 'CHANGE_FLOOR'
@@ -33,6 +34,7 @@ export const SET_DEST = 'SET_DEST'
 export const SET_CHECKSTART = 'SET_CHECKSTART'
 export const SET_CHECKDEST = 'SET_CHECKDEST'
 export const SET_VUEMAP = 'SET_VUEMAP'
+export const SET_ROUTE = 'SET_ROUTE'
 
 // Coordinate
 export const SET_STARTCOORDINATE = 'SET_STARTCOORDINATE'
