@@ -2,7 +2,13 @@
 	<div class="searchNav">
 		<type-button v-if="whethershowtypebutton"></type-button>
 		<div class="searchBox">
-			<input type="search" name="searchBox" class="searchColumn" @click="showsearchfloat" v-model="searchValue" @keyup.enter="searchResult">
+			<div class="searchColumn">
+				<div class="inputBack" v-if="!focus && (keyword == '' || keyword == undefined)">
+					<img src="/static/img/Nav_search.png" width="20px" height="20px" />
+					<span>Search...</span>
+				</div>
+				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" @keyup.enter="searchResult">
+			</div>
 		</div>
 		<list-button :rightType="righttype"></list-button>
 		<home-page-button :rightType="righttype"></home-page-button>
@@ -14,6 +20,7 @@
 	import { closeSearchNav } from '../actions/searchNav'
     import { setPromptDisplay, showPrompt, closePrompt } from '../actions/prompt'
 	import { showHot, closeHot } from '../actions/hot'
+	import { showList } from '../actions/list'
 	import { setSearchResult, showSearchResult } from '../actions/searchResult'
 	import { getListAll, getPromptDisplay } from '../getters'
 	import TypeButton from './searchNav/TypeButton'
@@ -22,7 +29,7 @@
 	import BackButton from './searchNav/BackButton'
 
 	export default {
-		props: ['whethershowtypebutton', 'righttype'],
+		props: ['whethershowtypebutton', 'righttype', 'keyword'],
 		components: {
 			TypeButton,
 			ListButton,
@@ -43,15 +50,23 @@
 				closePrompt,
 				closeSearchNav,
 				setSearchResult,
-				showSearchResult
+				showSearchResult,
+				showList
 			}
 		},
 		data () {
 			return {
-				searchValue: ""
+				searchValue: this.keyword,
+				focus: false
 			}
 		},
 		methods: {
+			onFocus: function () {
+				this.focus = true
+			},
+			offFocus: function () {
+				this.focus = false
+			},
 			closeHots: function (e) {
 				console.log(e)
 			},
@@ -91,6 +106,9 @@
 					this.showPrompt()
 				}
 			}
+		},
+		ready: function () {
+			console.log(this.keyword)
 		}
 	}
 
@@ -102,23 +120,45 @@
 		left: 0;
 		width: 100%;
 		height: 40px;
-		background-color: #34a4e4;
+		background-color: white;
 		z-index: 1000;
 		display: flex;
 	}
 	.searchBox {
 		float: left;
 		flex-basis: 60%;
-		flex-grow: 2;
+		flex-grow: 20;
 		height: 100%;
 		text-align: center;
 	}
 	.searchColumn {
-		width: 90%;
+		width: 95%;
 		height: 30px;
 		margin-top: 5px;
+		margin-left: 3%;
 		border-radius: 15px;
 		border: 1px;
 		outline: none;
+		background: rgba(240, 240, 240, 0.8);
+	}
+	.searchInput {
+		width: 90%;
+		height: 100%;
+		outline: none;
+		z-index: 10;
+	}
+	.inputBack {
+		color: #aaa;
+		line-height: 40px;
+		float: left;
+		margin-left: 10px;
+		position: absolute;
+	}
+	.inputBack span {
+		vertical-align: middle;
+		display: inline-block;
+		height: 20px;
+		line-height: 10px;
+		z-index: 1;
 	}
 </style>

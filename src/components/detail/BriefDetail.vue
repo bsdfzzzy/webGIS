@@ -1,15 +1,20 @@
 <template>
 	<div class="briefDetail">
-		<img src="#" width="60px" height="60px" class="detailImg">
+		<img src="#" width="50px" height="50px" class="detailImg">
 		<div class="briefDetailContent">
 			<p><strong>{{getDetail.title}}</strong></p>
-			<p>{{getDetail.desc}}</p>
 		</div>
-		<button class="go">go</button>
+		<img src="/static/img/route.png" width="50px" height="50px" class="route" @click="setDestination">
 	</div>
 </template>
 <script>
 	import { getDetail } from '../../getters'
+	import { setDest, showNavigate } from '../../actions/navigate'
+	import { closeList } from '../../actions/list'
+	import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../../actions/searchFloat'
+	import { closeSearchResult } from '../../actions/searchResult'
+	import { showSearchNav } from '../../actions/searchNav'
+	import { closeDetail } from '../../actions/detail'
 
 	export default {
 		vuex: {
@@ -17,7 +22,29 @@
 				getDetail
 			},
 			actions: {
-
+				setDest,
+				closeList,
+				closeSearchFloat,
+				closeSearchResult,
+				showNavigate,
+				showSearchNav,
+				notChoosingDest,
+				notChoosingStart,
+				closeDetail
+			}
+		},
+		methods: {
+			setDestination () {
+				let that = this
+				this.setDest(that.getDetail)
+				that.closeList()
+				that.closeSearchFloat()
+				that.closeSearchResult()
+				that.showSearchNav()
+				that.showNavigate()
+				that.notChoosingStart()
+				that.notChoosingDest()
+				that.closeDetail()
 			}
 		},
 		ready: function () {
@@ -36,12 +63,12 @@
 		width: 100%;
 		box-sizing: border-box;
 		min-height: 60px;
-		padding: 30px;
+		padding: 50px 30px 30px;
 		overflow: hidden;
-		border: 1px solid #ddd;
-		-webkit-box-shadow: 0 2px 10px #909090;/*safari或chrome*/
-		box-shadow: 0 2px 10px #909090;/*opera或ie9*/
-		-moz-box-shadow: 0 2px 10px #909090;/*firefox*/
+	}
+	.briefDetail p {
+		width: 100%;
+		float: left;
 	}
 	.detailImg {
 		float: left;
@@ -50,10 +77,12 @@
 		overflow: hidden;
 		float: left;
 		margin-left: 20px;
-		width: calc(100% - 100px);
+		width: calc(100% - 160px);
 	}
-	.go {
+	.route {
 		float: left;
-		margin-top: 20px;
+		margin-left: 10px;
+		background: #34a4e4;
+		border-radius: 40px;
 	}
 </style>

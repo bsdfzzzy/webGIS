@@ -1,5 +1,5 @@
 <template>
-    	<div class="slideDown" @click="displayMenu">
+    	<!--<div class="slideDown" @click="displayMenu">
 			分类
 		</div>
 		<div class="category" id="category" style="display: none;">
@@ -29,7 +29,7 @@
 					</ul>
 				</li>
 			</ul>
-		</div>
+		</div>-->
 </template>
 <script>
     export default {

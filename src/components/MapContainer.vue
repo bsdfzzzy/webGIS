@@ -24,7 +24,8 @@
   import { showNavigate, closeNavigate } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
-  import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
+  import { setHots } from '../actions/hot'
+  import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams } from '../actions/list'
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
     getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
     getListAll, getRoute } from '../getters'
@@ -56,10 +57,10 @@
         changeBrief,
         changeTitle,
         showBlocks,
-				showRooms,
+				showBusinesses,
 				showTeams,
 				setBlocks,
-				setRooms,
+				setBusinesses,
 				setTeams,
         changeFloor,
         setMapLayer,
@@ -69,7 +70,8 @@
         setF3Layer,
         setF4Layer,
         setLayers,
-        setIntro
+        setIntro,
+        setHots
       }
     },
   	methods: {
@@ -239,19 +241,19 @@
           scale: 0.3
         }))
       }))
-      let thumbnail = new ol.Feature({
-        geometry: new ol.geom.Point([103.93056, 30.74784])
-      })
-      thumbnail.setId(1)
-      thumbnail.setStyle(new ol.style.Style({
-        image: new ol.style.Icon(({
-          anchor: [0.5, 1],
-          src: '/static/img/camera.png',
-          scale: 0.1
-        }))
-      }))
+      // let thumbnail = new ol.Feature({
+      //   geometry: new ol.geom.Point([103.93056, 30.74784])
+      // })
+      // thumbnail.setId(1)
+      // thumbnail.setStyle(new ol.style.Style({
+      //   image: new ol.style.Icon(({
+      //     anchor: [0.5, 1],
+      //     src: '/static/img/camera.png',
+      //     scale: 0.1
+      //   }))
+      // }))
       let vectorSource = new ol.source.Vector({
-        features: [user, thumbnail]
+        features: [user]
       });
       let vectorLayer = new ol.layer.Vector({
         source: vectorSource
@@ -273,7 +275,7 @@
       map.getView().fit(bounds, map.getSize())
       view.setCenter(userCoor)
       view.setZoom(3)
-      overlay.setPosition(userCoor)
+      // overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       let f1_layer = new ol.layer.Image({
         source: new ol.source.ImageWMS({
@@ -424,17 +426,11 @@
       });
       axios.get('http://map.gugoo.cc/get_all_detail').then(function (res) {
 				let data = res.data.data
-        let buildings, rooms, teams
+        let buildings, businesses = [], teams
         if (data.building) {
           buildings = data.building
           buildings.map(function (item) {
             item.type = "BUILDING"
-          })
-        }
-        if (data.room) {
-          rooms = data.room
-          rooms.map(function (item) {
-            item.type = "ROOM"
           })
         }
         if (data.team) {
@@ -443,17 +439,46 @@
             item.type = "TEAM"
           })
         }
+        if (teams) {
+          teams.map(function (item) {
+            if (item.business) {
+              item.business.map(function (child) {
+                child.title = child.business_name
+                child.detail = child.business_detail
+                child.unique_id = item.unique_id
+                businesses.push(child)
+              })
+            }
+          })
+        }
+        if (buildings) {
+          buildings.map(function (item) {
+            if (item.business) {
+              item.business.map(function (child) {
+                child.title = child.business_name
+                child.detail = child.business_detail
+                child.unique_id = item.unique_id
+                businesses.push(child)
+              })
+            }
+          })
+        }
 				that.setBlocks(buildings)
-				that.setRooms(rooms)
+				that.setBusinesses(businesses)
 				that.setTeams(teams)
 			})
+      axios.get('http://map.gugoo.cc/get_hotsearch?unique_id=0').then(function (res) {
+        let hots = res.data
+        that.setHots(hots)
+      })
     }
   }
 </script>
 <style>
 	.mapContainer {
-		margin-top: 0px;
+		margin-top: 40px;
 		overflow: hidden;
+    border-top: 1px solid rgba(240, 240, 240, 0.8);
 	}
 	#map {
 		height: 100%;

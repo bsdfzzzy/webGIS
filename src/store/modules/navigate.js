@@ -1,13 +1,14 @@
 import * as types from '../constants'
 import coordinate from './coordinate'
+import ol from 'openlayers/dist/ol.js'
 
 const state = {
     whetherShowNavigate: true,
   	start: {
-      title: "我的位置"
+      title: "请输入起点"
     },
   	direction: {
-      title: "荷福众创空间"
+      title: "请输入终点"
     },
   	whetherShowChooseStart: false,
   	whetherShowChooseDirection: false,
@@ -17,6 +18,28 @@ const state = {
     checkStart: true,
     checkDest: true,
     route: []
+}
+
+const styles = {
+  'route': new ol.style.Style({
+    stroke: new ol.style.Stroke({
+      width: 6, color: [237, 212, 0, 0.8]
+    })
+  }),
+  'iconStart': new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: '/static/img/start.png',
+      scale: 0.3
+    })
+  }),
+  'iconDest': new ol.style.Style({
+    image: new ol.style.Icon({
+      anchor: [0.5, 1],
+      src: '/static/img/dest.png',
+      scale: 0.3
+    })
+  })
 }
 
 const mutations = {
@@ -79,9 +102,43 @@ const mutations = {
   },
   [types.SET_START] (state, start) {
     state.start = start
+    let startMarker = new ol.Feature({
+      type: 'iconStart',
+      geometry: new ol.geom.Point(start.coordinate),
+      name: "startMarker"
+    })
+    if (window.pathStart) {
+      map.removeLayer(pathStart)
+    }
+    window.pathStart = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [startMarker]
+      }),
+      style: function(feature) {
+        return styles[feature.get('type')];
+      }
+    })
+    map.addLayer(pathStart)
   },
   [types.SET_DEST] (state, dest) {
     state.direction = dest
+    let destMarker = new ol.Feature({
+      type: 'iconDest',
+      geometry: new ol.geom.Point(dest.coordinate),
+      name: "destMarker"
+    })
+    if (window.pathDest) {
+      map.removeLayer(pathDest)
+    }
+    window.pathDest = new ol.layer.Vector({
+      source: new ol.source.Vector({
+        features: [destMarker]
+      }),
+      style: function(feature) {
+        return styles[feature.get('type')];
+      }
+    })
+    map.addLayer(pathDest)
   },
   [types.SET_CHECKSTART] (state, bol) {
     state.checkStart = bol

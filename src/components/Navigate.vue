@@ -24,12 +24,12 @@
 					</ul>
 				</div>
 			</div>
-				<button class="navigateButtonContainer" :disabled="!getDisableButton" @click="pathNavigate">路径规划</button>
+				<button class="navigateButtonContainer" :disabled="!getDisableButton" @click="pathNavigate"><img src="/static/img/Button_Route.png" width="17px" height="17px" />   路径规划</button>
 			</div>
 	</div>
 </template>
 <script>
-	import { getListTeams, getListRooms, getListBlocks, getListAll, getShowChooseStart, 
+	import { getListTeams, getListBusinesses, getListBlocks, getListAll, getShowChooseStart, 
 		getShowChooseDirection, getShowStarts, getShowDirections, getShowButton, 
 		getStartCoordination, getDirectionCoordination, getStart, getDest, checkDest, 
 		checkStart, getBuilding, getDisableButton, getRoute, getMapFloor } from '../getters'
@@ -70,7 +70,7 @@
 				getDisableButton,
 				getListAll,
 				getListBlocks,
-				getListRooms,
+				getListBusinesses,
 				getListTeams,
 				getRoute,
 				getMapFloor
@@ -216,28 +216,8 @@
 					}
 				}).catch(function (e) {
 					console.log(e)
-				})				
-				let postData = []
-				if (startPointInfo.id) {
-					postData.push({
-						id: Number(startPointInfo.id),
-						category: startPointInfo.type
-					})
-				}
-				if (destPointInfo.id) {
-					postData.push({
-						id: Number(destPointInfo.id),
-						category: destPointInfo.type
-					})
-				}
-				if (postData.length != 0) {
-					let postDataJSON = JSON.stringify({
-						ids: postData
-					})
-					axios.post('http://map.gugoo.cc/record_search', postDataJSON).catch(function (e) {
-						console.log(e)
-					})
-				}
+				})
+				
 				let view = window.map.getView()
 				let resolution = view.getResolution()				
       			let styles = {
@@ -261,30 +241,30 @@
           				})
         			})
       			}
-				if (resolution > 0.000001341104507446289) {
-					let startMarker = new ol.Feature({
-        				type: 'iconStart',
-        				geometry: new ol.geom.Point(startPointInfo.coordinate),
-        				name: "startMarker"
-      				});
-      				startMarker.setId(2)
-      				let endMarker = new ol.Feature({
-        				type: 'iconDest',
-        				geometry: new ol.geom.Point(destPointInfo.coordinate),
-        				name: "endMarker"
-      				});
-      				endMarker.setId(3)
-					window.path = new ol.layer.Vector({
-        				source: new ol.source.Vector({
-          					features: [startMarker, endMarker]
-        				}),
-        				style: function(feature) {
-          					return styles[feature.get('type')];
-        				}
-      				});
+				// if (resolution > 0.000001341104507446289) {
+					// let startMarker = new ol.Feature({
+        			// 	type: 'iconStart',
+        			// 	geometry: new ol.geom.Point(startPointInfo.coordinate),
+        			// 	name: "startMarker"
+      				// });
+      				// startMarker.setId(2)
+      				// let endMarker = new ol.Feature({
+        			// 	type: 'iconDest',
+        			// 	geometry: new ol.geom.Point(destPointInfo.coordinate),
+        			// 	name: "endMarker"
+      				// });
+      				// endMarker.setId(3)
+					// window.path = new ol.layer.Vector({
+        			// 	source: new ol.source.Vector({
+          			// 		features: [startMarker, endMarker]
+        			// 	}),
+        			// 	style: function(feature) {
+          			// 		return styles[feature.get('type')];
+        			// 	}
+      				// });
 
-					map.addLayer(path)
-				}
+					// map.addLayer(path)
+				// }
 			}
 		},
 		watch: {
@@ -435,12 +415,13 @@
 		height: 35px;
 		overflow: hidden;
 		box-sizing: border-box;
-		border-radius: 6px;
+		border-radius: 4px;
 		background: #34a4e4;
 		outline: none;
 		color: white;
-		font-size: 18px;
+		font-size: 16px;
 		font-weight: 400;
 		margin-top: 10px;
+		border: 0;
 	}
 </style>

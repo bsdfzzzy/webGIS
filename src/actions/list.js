@@ -12,8 +12,8 @@ export const showBlocks = ({ dispatch }, ...args) => {
     return dispatch(types.SHOW_BLOCKS, ...args)
 }
 
-export const showRooms = ({ dispatch }, ...args) => {
-    return dispatch(types.SHOW_ROOMS, ...args)
+export const showBusinesses = ({ dispatch }, ...args) => {
+    return dispatch(types.SHOW_BUSINESSES, ...args)
 }
 
 export const showTeams = ({ dispatch }, ...args) => {
@@ -24,10 +24,14 @@ export const setBlocks = ({ dispatch }, ...args) => {
     return dispatch(types.SET_BLOCKS, ...args)
 }
 
-export const setRooms = ({ dispatch }, ...args) => {
-    return dispatch(types.SET_ROOMS, ...args)
+export const setBusinesses = ({ dispatch }, ...args) => {
+    return dispatch(types.SET_BUSINESSES, ...args)
 }
 
 export const setTeams = ({ dispatch }, ...args) => {
     return dispatch(types.SET_TEAMS, ...args)
+}
+
+export const setDisplay = ({ dispatch }, ...args) => {
+    return dispatch(types.SET_DISPLAY, ...args)
 }

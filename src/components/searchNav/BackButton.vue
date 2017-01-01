@@ -29,7 +29,7 @@
 		float: right;
     }
 	.listButton img {
-		margin: 5px auto 0px;
+		margin-top: 8px;
 		cursor: pointer;
 	}
 </style>

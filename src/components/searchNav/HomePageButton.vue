@@ -1,6 +1,6 @@
 <template>
     <div class="listButton" v-if="righttype == 'homePageButton'" @click="closeAll">
-	    <img src="/static/img/cancel.png" width="30px" height="30px">
+	    <img src="/static/img/cancel.png" width="25px" height="25px">
 	</div>
 </template>
 <script>
@@ -45,7 +45,7 @@
 		float: right;
     }
 	.listButton img {
-		margin: 5px auto 0px;
+		margin-top: 8px;
 		cursor: pointer;
 	}
 </style>

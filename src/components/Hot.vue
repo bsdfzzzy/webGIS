@@ -2,16 +2,33 @@
 	<div class="hot">
 		<nav>热门搜索</nav>
 		<div class="labels">
-			<div class="hotLabel">热门搜索</div>
-			<div class="hotLabel">热门搜索</div>
-			<div class="hotLabel">热门搜索</div>
-			<div class="hotLabel">热门搜索</div>
-			<div class="hotLabel">热门搜索</div>
+			<template v-for="item in getHots">
+				<div class="hotLabel" v-if="item.keyword != ''" @click="setSearchKeyword(item.keyword)">{{item.keyword}}</div>
+			</template>
 		</div>
 	</div>
 	<!-- <div class="insulate"></div> -->
 </template>
-<script></script>
+<script>
+	import { getHots } from '../getters'
+	import { setKeyword } from '../actions/searchFloat'
+
+	export default {
+		vuex: {
+			getters: {
+				getHots
+			},
+			actions: {
+				setKeyword
+			}
+		},
+		methods: {
+			setSearchKeyword: function (keyword) {
+				this.setKeyword(keyword)
+			}
+		}
+	}
+</script>
 <style>
 	.hot {
 		width: 100%;

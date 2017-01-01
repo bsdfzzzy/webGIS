@@ -2,7 +2,9 @@ import * as types from '../constants'
 
 const state = {
 	whetherShowDetail: false,
-    display: {}
+    display: {},
+    showBase: true,
+    showBusiness: false
 }
 
 const mutations = {
@@ -14,6 +16,14 @@ const mutations = {
     },
     [types.SET_DISPLAY_DETAIL] (state, detail) {
         state.display = detail
+    },
+    [types.SHOW_BASE] (state) {
+        state.showBase = true
+        state.showBusiness = false
+    },
+    [types.SHOW_BUSINESS] (state) {
+        state.showBase = false
+        state.showBusiness = true
     }
 }
 

@@ -1,30 +1,65 @@
 <template>
 	<div class="moreDetail">
-		<template v-if="getDetail.detail != ''">
-			<div v-html="getDetail.detail"></div>
+		<nav>
+			<div class="moreDetailNav" @click="showBase">
+				<p :class="getShowDetailBase ? 'activeItem' : ''">基本信息</p>
+			</div>
+			<div class="moreDetailNav" @click="showBusiness">
+				<p :class="getShowDetailBusiness ? 'activeItem' : ''">业务信息</p>
+			</div>
+		</nav>
+		<template class="moreDetailBaseContainer" v-if="getShowDetailBase">
+			<template v-if="!getDetail.detail">
+				<div class="moreDetailBase">
+					暂无基本信息
+				</div>
+			</template>
+			<template v-else>
+				<div v-html="getDetail.detail" class="moreDetailBase"></div>
+			</template>
+		</template>
+		<template class="moreDetailBusinessContainer" v-if="getShowDetailBusiness">
+			<template v-if="getDetail.business">
+				<template v-for="officeBusiness in getDetail.business">
+					<p class="moreDetailBusiness">{{officeBusiness.business_name}}</p>
+					<div v-html="officeBusiness.business_detail" class="moreDetailBusiness"></div>
+				</template>
+			</template>
+			<template v-else>
+				<div class="moreDetailBusiness">
+					暂无业务信息
+				</div>
+			</template>
 		</template>
 	</div>
 </template>
 <script>
-	import { getDetail } from '../../getters'
+	import { getDetail, getShowDetailBase, getShowDetailBusiness, getListDisplay } from '../../getters'
+	import { showBase, showBusiness } from '../../actions/detail'
 
 	export default {
 		vuex: {
 			getters: {
-				getDetail
+				getDetail,
+				getShowDetailBase,
+				getShowDetailBusiness,
+				getListDisplay
 			},
 			actions: {
-
+				showBase,
+				showBusiness
 			}
 		},
 		ready: function () {
-			// let id = this.getDetail.id
-			// postDataJSON = JSON.stringify({
-			// 	ids: [id]
-			// })
-			// axios.post('', ).catch(function (e) {
-			// 	console.log(e)
-			// })
+			if (this.getListDisplay[0]) {
+				if (this.getListDisplay[0].business_name) {
+					this.showBusiness()
+				} else {
+					this.showBase()
+				}
+			} else {
+				this.showBase()
+			}
 		}
 	}
 </script>
@@ -33,8 +68,36 @@
 		width: 100%;
 		overflow: hidden;
 		min-height: 400px;
-		padding-top: 30px;
-		border: 1px solid black;
 		box-sizing: border-box;
+	}
+	.moreDetailNav {
+		display: inline-block;
+		cursor: pointer;
+		flex: 1;
+		text-align: center;
+		height: 30px;
+		line-height: 35px;
+	}
+	.moreDetail nav {
+		height: 35px;
+		display: flex;
+		border-bottom: 1px solid #ddd;
+		-webkit-box-shadow: 0 2px 10px rgba(220, 220, 220, 0.8);/*safari或chrome*/
+		box-shadow: 0 2px 10px rgba(220, 220, 220, 0.8);/*opera或ie9*/
+		-moz-box-shadow: 0 2px 10px rgba(220, 220, 220, 0.8);/*firefox*/
+	}
+	.moreDetailNav:last-child {
+		border-left: 1px solid #ddd;
+	}
+	.moreDetailNav p {
+		width: 80%;
+		margin: auto;
+		height: 30px;
+	}
+	.moreDetailBase {
+		padding: 40px;
+	}
+	.moreDetailBusiness {
+		padding: 40px;
 	}
 </style>

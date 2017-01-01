@@ -114,8 +114,8 @@ export function getListBlocks (state) {
 	return state.list.blocks
 }
 
-export function getListRooms (state) {
-	return state.list.rooms
+export function getListBusinesses (state) {
+	return state.list.businesses
 }
 
 export function getListTeams (state) {
@@ -123,7 +123,7 @@ export function getListTeams (state) {
 }
 
 export function getListAll (state) {
-	return (state.list.blocks).concat(state.list.rooms).concat(state.list.teams)
+	return (state.list.blocks).concat(state.list.teams)
 }
 
 export function getShowSearchNav (state) {
@@ -188,4 +188,28 @@ export function getIntro (state) {
 
 export function getRoute (state) {
 	return state.navigate.route
+}
+
+export function getHots (state) {
+	return state.hot.hots
+}
+
+export function getKeyword (state) {
+	return state.searchFloat.searchKeyword
+}
+
+export function getOldDisplay (state) {
+	return state.list.oldDisplay
+}
+
+export function getShowDetailBase (state) {
+	return state.detail.showBase
+}
+
+export function getShowDetailBusiness (state) {
+	return state.detail.showBusiness
+}
+
+export function getNowSelectItem (state) {
+	return state.list.nowSelect
 }

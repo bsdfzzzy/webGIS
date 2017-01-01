@@ -1,13 +1,14 @@
 <template>
 	<div class="item">
 		<div class="itemContentContainer">
-			<img :src="picture" width="60px" height="60px" class="itemContentImg">
+			<img :src="picture" width="60px" height="60px" class="itemContentImg" v-if="picture">
 			<p class="itemContentTitle"><strong>{{title}}</strong></p>
-			<p class="itemContentDesc">{{content}}</p>
+			<p class="itemContentDesc" v-if="location">{{location}}</p>
+			<p class="itemContentDesc" v-if="content">{{content}}</p>
 		</div>
 		<div class="itemButtonContainer">
-			<div class="setThisToStart" @click="setToStart" data-id="{{id}}">设为起点</div>
-			<div class="itemDetail" @click="routeToDetail" data-id="{{id}}">详情</div>
+			<div class="setThisToStart" @click="setToDest" data-id="{{unique_id}}" v-if="content">去这里</div>
+			<div class="itemDetail" @click="routeToDetail" data-id="{{unique_id}}">详情</div>
 		</div>
 	</div>
 </template>
@@ -22,7 +23,7 @@
 	import { showNavigate } from '../actions/navigate'
 
 	export default {
-		props: ['img', 'title', 'content', 'id', 'picture'],
+		props: ['img', 'title', 'content', 'unique_id', 'picture', 'location'],
 		vuex: {
 			getters: {
 				getListAll
@@ -42,30 +43,35 @@
 			}
 		},
 		methods: {
-			setToStart (e) {
+			setToDest (e) {
 				let that = this
-				this.getListAll.map(function (item) {
-					if (item.id == e.target.dataset.id) {
-						that.setStart(item)
-						that.closeList()
-                		that.closeSearchFloat()
-                		that.closeSearchResult()
-						that.showSearchNav()
-						that.showNavigate()
-						that.notChoosingStart()
-						that.notChoosingDest()
-						return
+				for (let item of that.getListAll) {
+					if (item) {
+						if (item.unique_id == e.target.dataset.id) {
+							that.setDest(item)
+							that.closeList()
+							that.closeSearchFloat()
+							that.closeSearchResult()
+							that.showSearchNav()
+							that.showNavigate()
+							that.notChoosingStart()
+							that.notChoosingDest()
+							break
+						}
 					}
-				})
+				}
 			},
 			routeToDetail (e) {
 				let that = this
-				this.getListAll.map(function (item) {
-					if (item.id == e.target.dataset.id) {
-						that.setDisplayDetail(item)
+				for(let item of that.getListAll) {
+					if (item) {
+						if (item.unique_id == e.target.dataset.id) {
+							that.setDisplayDetail(item)
+							that.showDetail()
+							break
+						}
 					}
-				})
-				this.showDetail()
+				}
 			}
 		}
 	}

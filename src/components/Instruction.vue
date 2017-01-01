@@ -2,16 +2,18 @@
 	<div class="instruction">
 		<div class="brief">
 			<div class="scroll" @click.stop.prevent="toggle">
-				<img src="/static/img/Panel_arrow-up.png" width="30px" />	
+				<img :src="up ? '/static/img/Panel_arrow-up.png' : '/static/img/Panel_arrow-down.png'" width="30px" />	
 			</div>
 			<div class="brief-ins">
-				<img src="/static/img/logo.jpg" width="60px" height="60px" class="brief-ins-logo">
+				<img src="/static/img/logo.jpg" width="60px" height="60px" class="brief-ins-logo" v-if="!up">
 				<div class="brief-ins-content">
-					<p><strong style="font-size:15px;">{{getIntro.title}}</strong></p>
-					<p style="font-size: 13px;">{{getIntro.desc}}</p>
+					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="up && getIntro.location">{{getIntro.location}}</span></p>
+					<p style="font-size: 13px;" v-if="!up">{{getIntro.desc}}</p>
+					<p v-if="!up && getIntro.location">{{getIntro.location}}</p>
+					<p v-if="!up && getIntro.telephone">{{getIntro.telephone}}</p>
 				</div>	
 			</div>
-			 <div class="menu">
+			 <div class="menu" v-if="!up">
 				<div class="" @click="showItsDetail">详情</div>
 				<div class="panorama" @click="getIntoBuilding">室内</div>
 			</div> 
@@ -19,7 +21,7 @@
 				<img src="/static/img/navi.png" width="65px" height="65px">
 			</div>
 		</div>
-		<div v-if="show" class="more-ins" transition="expand"></div>
+		<!--<div v-if="show" class="more-ins" transition="expand"></div>-->
 	</div>
 </template>
 <script>
@@ -47,12 +49,14 @@
 		},
 		data () {
 			return {
-				show: false
+				show: false,
+				up: true
 			}
 		},
 		methods: {
 			toggle () {
 				this.show = !this.show
+				this.up = !this.up
 			},
 			navigateToTheBuilding () {
 				this.setDest(this.getIntro)
@@ -90,7 +94,7 @@
 	}
 	.brief {
 		position: relative;
-		min-height: 100px;
+		min-height: 50px;
 		padding-top: 10px;
 	}
 	.scroll {
@@ -121,11 +125,11 @@
 		margin-left: 15px;
 		float: left;
 		width: calc(100% - 20px - 60px - 15px);
-		min-height: 75px;
+		min-height: 20px;
 		overflow: hidden;
 	}
 	.menu {
-		position: absolute;
+		position: relative;
 		width: calc(100% - 40px);
 		height: 30px;
 		margin: auto;

@@ -1,13 +1,22 @@
 <template>
 	<div class="itemList">
-		<search-nav :rightType="'homePageButton'"></search-nav>
+		<div class="searchNav">
+			<div class="searchBox">
+				<div class="searchColumn">
+					<input type="search" name="searchBox" class="searchInput" v-model="searchValue">
+				</div>
+			</div>
+			<div class="listButton" @click="closeAll">
+	    		<img src="/static/img/home.png" width="25px" height="25px">
+			</div>
+		</div>
 		<div class="listNav">
-			<div class="navItem" @click="showBlocks">楼栋</div>
-			<div class="navItem" @click="showRooms">房间</div>
-			<div class="navItem" @click="showTeams">团队</div>
+			<div :class="getNowSelectItem == 'blocks' ? 'activeItem navItem' : 'navItem'" @click="showBlocks">楼栋</div>
+			<div :class="getNowSelectItem == 'teams' ? 'activeItem navItem' : 'navItem'" @click="showTeams">团队</div>
+			<div :class="getNowSelectItem == 'businesses' ? 'activeItem navItem' : 'navItem'" @click="showBusinesses">业务</div>
 		</div>
 		<div class="listContent">
-			<item v-for="display in getListDisplay" :img="display.img" :title="display.title" :content="display.desc" :id="display.id" :picture="display.picture"></item>
+			<item v-for="display in getListDisplay" :location="display.location" :img="display.img" :title="display.title" :content="display.desc" :unique_id="display.unique_id" :picture="display.picture"></item>
 		</div>
 	</div>
 </template>
@@ -15,25 +24,74 @@
 	import Item from './Item.vue'
 	import SearchNav from './SearchNav'
 	import axios from 'axios'
-	import { showBlocks, showRooms, showTeams, setBlocks, setRooms, setTeams } from '../actions/list'
-	import { getListDisplay } from '../getters'
+	import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams, closeList, setDisplay } from '../actions/list'
+    import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
+	import { getListDisplay, getOldDisplay, getNowSelectItem } from '../getters'
+	import { closeSearchResult } from '../actions/searchResult'
+	import { showSearchNav } from '../actions/searchNav'
+	import { showNavigate } from '../actions/navigate'
 
 	export default {
 		components: {
 			Item,
 			SearchNav
 		},
+		data () {
+			return {
+				searchValue: ""
+			}
+		},
 		vuex: {
 			getters: {
-				getListDisplay
+				getListDisplay,
+				getOldDisplay,
+				getNowSelectItem
 			},
 			actions: {
 				showBlocks,
-				showRooms,
+				showBusinesses,
 				showTeams,
 				setBlocks,
-				setRooms,
-				setTeams
+				setBusinesses,
+				setTeams,
+				closeList,
+				closeSearchFloat,
+				closeSearchResult,
+				showSearchNav,
+				showNavigate,
+				notChoosingDest,
+				notChoosingStart,
+				setDisplay
+			}
+		},
+		methods: {
+            closeAll: function () {
+                this.closeList()
+                this.closeSearchFloat()
+                this.closeSearchResult()
+				this.showSearchNav()
+				this.showNavigate()
+				this.notChoosingStart()
+				this.notChoosingDest()
+            }
+        },
+		watch: {
+			searchValue: function (newValue) {
+				let that = this
+				let pushDisplay = []
+				if (newValue == "") {
+					that.setDisplay(that.getOldDisplay)
+				} else {
+					for (let item of that.getListDisplay) {
+						let matcher = eval('/' + newValue + '/')
+						if (item) {
+							if (item.title.match(matcher) || item.detail.match(matcher)) {
+								pushDisplay.push(item)
+							}
+						}
+					}
+					that.setDisplay(pushDisplay)
+				}
 			}
 		},
 		ready () {
@@ -76,5 +134,9 @@
 		position: absolute;
 		top: 80px;
 		overflow: scroll;
+	}
+	.activeItem {
+		color: #34a4e4;
+		border-bottom: 2px solid #34a4e4;
 	}
 </style>

@@ -2,6 +2,7 @@ import * as types from '../constants'
 
 const state = {
 	whetherShowHot: true,
+    hots: []
 }
 
 const mutations = {
@@ -10,6 +11,9 @@ const mutations = {
     },
     [types.CLOSE_HOT] (state) {
         state.whetherShowHot = false
+    },
+    [types.SET_HOTS] (state, hots) {
+        state.hots = hots
     }
 }
 

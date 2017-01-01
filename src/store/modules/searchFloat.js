@@ -3,7 +3,8 @@ import * as types from '../constants'
 const state = {
 	whetherShowSearchFloat: false,
     choosingStart: false,
-    choosingDest: false
+    choosingDest: false,
+    searchKeyword: ""
 }
 
 const mutations = {
@@ -12,6 +13,7 @@ const mutations = {
     },
     [types.CLOSE_SEARCHFLOAT] (state) {
         state.whetherShowSearchFloat = false
+        state.searchKeyword = ""
     },
     [types.CHOOSING_START] (state) {
         state.choosingStart = true
@@ -24,6 +26,9 @@ const mutations = {
     },
     [types.NOT_CHOOSING_DEST] (state) {
         state.choosingDest = false
+    },
+    [types.SET_SEARCH_KEYWORD] (state, keyword) {
+        state.searchKeyword = keyword
     }
 }
 

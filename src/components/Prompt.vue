@@ -14,14 +14,14 @@
         </div>
 </template>
 <script>
-    import { getPromptDisplay, getWhetherChoosingStart, getWhetherChoosingDest } from '../getters'
+    import { getPromptDisplay, getWhetherChoosingStart, getWhetherChoosingDest, getListAll } from '../getters'
     import { showSearchResult, setSearchResult } from '../actions/searchResult'
     import { setStart, setDest,  } from '../actions/navigate'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
     import { showNavigate } from '../actions/navigate'
     import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
     import { showSearchNav } from '../actions/searchNav'
-    import { getListAll } from '../getters'
+    import { closeList } from '../actions/list'
 
     export default {
         vuex: {
@@ -42,7 +42,8 @@
                 notChoosingStart,
                 notChoosingDest,
                 showSearchNav,
-                setSearchResult
+                setSearchResult,
+                closeList
             }
         },
         methods: {
@@ -69,11 +70,12 @@
                     this.showNavigate()
                     this.notChoosingStart()
                     this.showSearchNav()
+                    this.closeList()
                     this.closeSearchFloat()
                 } else if (this.getWhetherChoosingDest) {
                     that.getListAll.map(function (item, index) {
                         if (item) {
-                            if (item.id == id) {
+                            if (item.unique_id == id) {
                                 that.setDirectionCoordinate(item.coordinate)
                                 that.setDest(item)
                             }   
@@ -82,16 +84,18 @@
                     this.showNavigate()
                     this.notChoosingDest()
                     this.showSearchNav()
+                    this.closeList()
                     this.closeSearchFloat()
                 } else {
                     let results = []
                     that.getListAll.map(function (item, index) {
                         if (item) {
-                            if (item.id == id) {
+                            if (item.unique_id == id) {
                                 results.push(item)
                             }
                         }
                     })
+                    this.closeList()
                     that.setSearchResult(results)
                     this.showSearchResult()
                 }

@@ -11,3 +11,11 @@ export const closeDetail = ({ dispatch }, ...args) => {
 export const setDisplayDetail = ({ dispatch }, ...args) => {
     return dispatch(types.SET_DISPLAY_DETAIL, ...args)
 }
+
+export const showBase = ({ dispatch }, ...args) => {
+    return dispatch(types.SHOW_BASE, ...args)
+}
+
+export const showBusiness = ({ dispatch }, ...args) => {
+    return dispatch(types.SHOW_BUSINESS, ...args)
+}
