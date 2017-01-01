@@ -220,27 +220,27 @@
 				
 				let view = window.map.getView()
 				let resolution = view.getResolution()				
-      			let styles = {
-        			'route': new ol.style.Style({
-          				stroke: new ol.style.Stroke({
-            				width: 6, color: [237, 212, 0, 0.8]
-          				})
-        			}),
-        			'iconStart': new ol.style.Style({
-          				image: new ol.style.Icon({
-            				anchor: [0.5, 1],
-            				src: '/static/img/start.png',
-            				scale: 0.1
-          				})
-        			}),
-        			'iconDest': new ol.style.Style({
-          				image: new ol.style.Icon({
-            				anchor: [0.5, 1],
-            				src: '/static/img/dest.png',
-            				scale: 0.1
-          				})
-        			})
-      			}
+      			// let styles = {
+        		// 	'route': new ol.style.Style({
+          		// 		stroke: new ol.style.Stroke({
+            	// 			width: 6, color: [237, 212, 0, 0.8]
+          		// 		})
+        		// 	}),
+        		// 	'iconStart': new ol.style.Style({
+          		// 		image: new ol.style.Icon({
+            	// 			anchor: [0.5, 1],
+            	// 			src: '/static/img/start.png',
+            	// 			scale: 0.1
+          		// 		})
+        		// 	}),
+        		// 	'iconDest': new ol.style.Style({
+          		// 		image: new ol.style.Icon({
+            	// 			anchor: [0.5, 1],
+            	// 			src: '/static/img/dest.png',
+            	// 			scale: 0.1
+          		// 		})
+        		// 	})
+      			// }
 				// if (resolution > 0.000001341104507446289) {
 					// let startMarker = new ol.Feature({
         			// 	type: 'iconStart',
