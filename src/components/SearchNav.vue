@@ -139,13 +139,12 @@
 		border-radius: 15px;
 		border: 1px;
 		outline: none;
-		background: rgba(240, 240, 240, 0.8);
+		background: rgba(240, 240, 240, 1);
 	}
 	.searchInput {
 		width: 90%;
 		height: 100%;
 		outline: none;
-		z-index: 10;
 	}
 	.inputBack {
 		color: #aaa;
@@ -159,6 +158,5 @@
 		display: inline-block;
 		height: 20px;
 		line-height: 10px;
-		z-index: 1;
 	}
 </style>
