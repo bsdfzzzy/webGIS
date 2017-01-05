@@ -14,6 +14,9 @@ const mutations = {
     },
     [types.SET_PROMPT_DISPLAY] (state, displays) {
         state.display = displays
+    },
+    [types.CLEAR_PROMPT] (state) {
+        state.display = []
     }
 }
 

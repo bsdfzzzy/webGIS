@@ -19,6 +19,7 @@
     import { setStart, setDest,  } from '../actions/navigate'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
     import { showNavigate } from '../actions/navigate'
+    import { clearPrompt } from '../actions/prompt'
     import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
     import { showSearchNav } from '../actions/searchNav'
     import { closeList } from '../actions/list'
@@ -43,7 +44,8 @@
                 notChoosingDest,
                 showSearchNav,
                 setSearchResult,
-                closeList
+                closeList,
+                clearPrompt
             }
         },
         methods: {
@@ -99,6 +101,7 @@
                     that.setSearchResult(results)
                     this.showSearchResult()
                 }
+                that.clearPrompt()
             }
         }
     }

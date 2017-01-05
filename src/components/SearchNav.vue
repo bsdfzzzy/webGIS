@@ -19,7 +19,7 @@
 	import axios from 'axios'
 	import { showSearchFloat } from '../actions/searchFloat'
 	import { closeSearchNav } from '../actions/searchNav'
-    import { setPromptDisplay, showPrompt, closePrompt } from '../actions/prompt'
+    import { setPromptDisplay, showPrompt, closePrompt, clearPrompt } from '../actions/prompt'
 	import { showHot, closeHot } from '../actions/hot'
 	import { showList } from '../actions/list'
 	import { setSearchResult, showSearchResult } from '../actions/searchResult'
@@ -52,7 +52,8 @@
 				closeSearchNav,
 				setSearchResult,
 				showSearchResult,
-				showList
+				showList,
+				clearPrompt
 			}
 		},
 		data () {
@@ -89,6 +90,7 @@
 		},
 		watch: {
 			searchValue: function (newSearchValue) {
+				console.log(newSearchValue)
 				let that = this
 				if (newSearchValue == "") {
 					this.showHot()

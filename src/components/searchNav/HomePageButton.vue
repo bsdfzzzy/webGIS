@@ -6,6 +6,7 @@
 <script>
 	import { closeList } from '../../actions/list'
     import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../../actions/searchFloat'
+	import { clearPrompt } from '../../actions/prompt'
     import { closeSearchResult } from '../../actions/searchResult'
 	import { showSearchNav } from '../../actions/searchNav'
 	import { showNavigate } from '../../actions/navigate'
@@ -20,12 +21,14 @@
 				showSearchNav,
 				showNavigate,
 				notChoosingDest,
-				notChoosingStart
+				notChoosingStart,
+				clearPrompt
 			}
 		},
         methods: {
             closeAll: function () {
                 this.closeList()
+				this.clearPrompt()
                 this.closeSearchFloat()
                 this.closeSearchResult()
 				this.showSearchNav()

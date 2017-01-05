@@ -15,8 +15,11 @@
 			<div :class="getNowSelectItem == 'teams' ? 'activeItem navItem' : 'navItem'" @click="showTeams">团队</div>
 			<div :class="getNowSelectItem == 'businesses' ? 'activeItem navItem' : 'navItem'" @click="showBusinesses">业务</div>
 		</div>
-		<div class="listContent">
+		<div class="listContent" v-if="getListDisplay.length != 0">
 			<item v-for="display in getListDisplay" :location="display.location" :img="display.img" :title="display.title" :content="display.desc" :unique_id="display.unique_id" :picture="display.picture"></item>
+		</div>
+		<div class="listContentNoResult" v-if="getListDisplay.length == 0">
+			没有搜索结果
 		</div>
 	</div>
 </template>
@@ -138,5 +141,15 @@
 	.activeItem {
 		color: #34a4e4;
 		border-bottom: 2px solid #34a4e4;
+	}
+	.listContentNoResult {
+		width: 100%;
+		height: 60px;
+		position: absolute;
+		top: 80px;
+		line-height: 60px;
+		padding-left: 30px;
+		color: #999;
+		border-bottom: 1px solid rgb(240, 240, 240);
 	}
 </style>

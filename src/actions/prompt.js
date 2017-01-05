@@ -10,3 +10,7 @@ export const closePrompt = ({ dispatch }, ...args) => {
 export const setPromptDisplay = ({ dispatch }, ...args) => {
     return dispatch(types.SET_PROMPT_DISPLAY, ...args)
 }
+
+export const clearPrompt = ({ dispatch }, ...args) => {
+    return dispatch(types.CLEAR_PROMPT, ...args)
+}

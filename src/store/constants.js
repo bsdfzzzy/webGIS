@@ -80,6 +80,7 @@ export const SET_DISPLAY = 'SET_DISPLAY'
 export const SHOW_PROMPT = 'SHOW_PROMPT'
 export const CLOSE_PROMPT = 'CLOSE_PROMPT'
 export const SET_PROMPT_DISPLAY = 'SET_PROMPT_DISPLAY'
+export const CLEAR_PROMPT = 'CLEAR_PROMPT'
 
 // Detail
 export const SHOW_DETAIL = 'SHOW_DETAIL'
