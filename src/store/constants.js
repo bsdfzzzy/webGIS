@@ -5,6 +5,8 @@ export const CHANGE_BRIEF = 'CHANGE_BRIEF'
 export const CHANGE_TITLE = 'CHANGE_TITLE'
 export const SET_DESTID = 'SET_DESTID'
 export const SET_INTRO = 'SET_INTRO'
+export const SHOW_ITS_BUSINESS = 'SHOW_ITS_BUSINESS'
+export const SHOW_ITS_INDOOR = 'SHOW_ITS_INDOOR'
 
 //Map
 export const CHANGE_FLOOR = 'CHANGE_FLOOR'

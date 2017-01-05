@@ -213,3 +213,11 @@ export function getShowDetailBusiness (state) {
 export function getNowSelectItem (state) {
 	return state.list.nowSelect
 }
+
+export function getShowIndoor (state) {
+	return state.instruction.whetherShowIndoor
+}
+
+export function getShowBusiness (state) {
+	return state.instruction.whetherShowBusiness
+}

@@ -22,3 +22,11 @@ export const setDestId = ({dispatch}, ...args) => {
 export const setIntro = ({dispatch}, ...args) => {
 	return dispatch(types.SET_INTRO, ...args)
 }
+
+export const showItsIndoor = ({dispatch}, ...args) => {
+	return dispatch(types.SHOW_ITS_INDOOR, ...args)
+}
+
+export const showItsBusiness = ({dispatch}, ...args) => {
+	return dispatch(types.SHOW_ITS_BUSINESS, ...args)
+}

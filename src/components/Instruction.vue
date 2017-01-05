@@ -15,7 +15,12 @@
 			</div>
 			 <div class="menu" v-if="!up">
 				<div class="" @click="showItsDetail">详情</div>
-				<div class="panorama" @click="getIntoBuilding">室内</div>
+				<template v-if="getShowIndoor">
+					<div class="panorama" @click="getIntoBuilding">室内</div>
+				</template>
+				<template v-else="getShowBusiness">
+					<div class="panorama" @click="getIntoBusiness">业务</div>
+				</template>
 			</div> 
 			<div class="navigateButton" @click="navigateToTheBuilding">
 				<img src="/static/img/navi.png" width="65px" height="65px">
@@ -25,9 +30,10 @@
 	</div>
 </template>
 <script>
-	import { getListAll, getIntro } from '../getters'
+	import { getListAll, getIntro, getShowIndoor, getShowBusiness } from '../getters'
 	import { showNavigate, setDest } from '../actions/navigate'
 	import { setDestId, closeInstruction } from '../actions/instruction'
+	import { showBusinesses } from '../actions/list'
 	import { setDirectionCoordinate } from '../actions/coordinate'
 	import { showDetail, setDisplayDetail } from '../actions/detail'
 
@@ -35,7 +41,9 @@
 		vuex: {
 			getters: {
 				getListAll,
-				getIntro
+				getIntro,
+				getShowIndoor,
+				getShowBusiness
 			},
 			actions: {
 				showNavigate,
@@ -44,7 +52,8 @@
 				setDirectionCoordinate,
 				closeInstruction,
 				showDetail,
-				setDisplayDetail
+				setDisplayDetail,
+				showBusinesses
 			}
 		},
 		data () {
@@ -76,7 +85,24 @@
 				this.showDetail()
 			},
 			getIntoBuilding () {
-				
+				let view = map.getView()
+				let that = this
+				view.setCenter(that.getIntro.coordinate)
+				view.setZoom(6)
+			},
+			getIntoBusiness () {
+				let that = this
+				this.showBusinesses()
+				let id = this.getIntro.unique_id
+				for(let item of that.getListAll) {
+					if (item) {
+						if (item.unique_id == id) {
+							that.setDisplayDetail(item)
+							that.showDetail()
+							break
+						}
+					}
+				}
 			}
 		}
 	}

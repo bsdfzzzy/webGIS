@@ -5,7 +5,9 @@ const state = {
 	title: "",
 	brief: "",
   id: 0,
-  intro: {}
+  intro: {},
+  whetherShowIndoor: false,
+  whetherShowBusiness: false
 }
 
 const mutations = {
@@ -26,6 +28,14 @@ const mutations = {
   },
   [types.SET_INTRO] (state, intro) {
     state.intro = intro
+  },
+  [types.SHOW_ITS_INDOOR] (state) {
+    state.whetherShowIndoor = true
+    state.whetherShowBusiness = false
+  },
+  [types.SHOW_ITS_BUSINESS] (state) {
+    state.whetherShowIndoor = false
+    state.whetherShowBusiness = true
   }
 }
 

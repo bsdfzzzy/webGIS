@@ -20,7 +20,7 @@
 </template>
 <script>
 	import ol from 'openlayers/dist/ol.js'
-  import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro } from '../actions/instruction'
+  import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro, showItsIndoor, showItsBusiness } from '../actions/instruction'
   import { showNavigate, closeNavigate } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
@@ -71,7 +71,9 @@
         setF4Layer,
         setLayers,
         setIntro,
-        setHots
+        setHots,
+        showItsIndoor,
+        showItsBusiness
       }
     },
   	methods: {
@@ -364,6 +366,7 @@
           ul_.style.display = 'none'
         }
       })
+      let shouldShowIndoor = [61, 62, 64, 63, 59, 60, 58, 57, 89]
       map.on('click', function(evt) {
         that.closeInstruction()
         let view2 = map.getView()
@@ -407,6 +410,17 @@
             for (let item of that.getListAll) {
               if (item) {
                 if (item.unique_id == uid) {
+                  let haveIndoor = false
+                  for (let ifIndoor of shouldShowIndoor) {
+                    if (ifIndoor == uid) {
+                      that.showItsIndoor()
+                      haveIndoor = true
+                      break
+                    }
+                  }
+                  if (!haveIndoor) {
+                    that.showItsBusiness()
+                  }
                   that.setIntro(item)
                   that.showInstruction()
                   that.closeNavigate()
