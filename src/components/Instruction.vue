@@ -5,7 +5,7 @@
 				<img :src="up ? '/static/img/Panel_arrow-up.png' : '/static/img/Panel_arrow-down.png'" width="30px" />	
 			</div>
 			<div class="brief-ins">
-				<img src="/static/img/logo.jpg" width="60px" height="60px" class="brief-ins-logo" v-if="!up">
+				<img :src="getIntro.picture" width="60px" height="60px" class="brief-ins-logo" v-if="!up">
 				<div class="brief-ins-content">
 					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="up && getIntro.location">{{getIntro.location}}</span></p>
 					<p style="font-size: 13px;" v-if="!up">{{getIntro.desc}}</p>
