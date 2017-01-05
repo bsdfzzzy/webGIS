@@ -57,7 +57,7 @@
 		},
 		data () {
 			return {
-				searchValue: this.keyword,
+				searchValue: "",
 				focus: false
 			}
 		},
@@ -112,10 +112,12 @@
 					// this.setPromptDisplay(pushDisplay)
 					// this.showPrompt()
 				}
+			},
+			keyword: function (newKeyword) {
+				this.searchValue = newKeyword
 			}
 		},
 		ready: function () {
-			console.log(this.keyword)
 		}
 	}
 
