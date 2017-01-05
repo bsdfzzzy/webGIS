@@ -28,6 +28,7 @@
 		methods: {
 			setChoose: function (str) {
 				this.choose = str
+				this.showChoose = !this.showChoose
 			},
 			showChooseBox: function () {
 				this.showChoose = !this.showChoose
