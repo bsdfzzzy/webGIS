@@ -16,6 +16,7 @@
 	</div>
 </template>
 <script>
+	import axios from 'axios'
 	import { showSearchFloat } from '../actions/searchFloat'
 	import { closeSearchNav } from '../actions/searchNav'
     import { setPromptDisplay, showPrompt, closePrompt } from '../actions/prompt'
@@ -88,22 +89,28 @@
 		},
 		watch: {
 			searchValue: function (newSearchValue) {
+				let that = this
 				if (newSearchValue == "") {
 					this.showHot()
 					this.closePrompt()
 				} else {
 					this.closeHot()
-					let pushDisplay = []
-					this.getListAll.map(function (item) {
-						let matcher = eval('/' + newSearchValue + '/')
-						if (item) {
-							if (item.title.match(matcher)) {
-  								pushDisplay.push(item)
-  							}
-						}
+					axios.get(`http://map.gugoo.cc//poi_search?kw=${newSearchValue}`).then(res => {
+						let data = res.data.data
+						that.setPromptDisplay(data)
+						that.showPrompt()
 					})
-					this.setPromptDisplay(pushDisplay)
-					this.showPrompt()
+					// let pushDisplay = []
+					// this.getListAll.map(function (item) {
+					// 	let matcher = eval('/' + newSearchValue + '/')
+					// 	if (item) {
+					// 		if (item.title.match(matcher)) {
+  					// 			pushDisplay.push(item)
+  					// 		}
+					// 	}
+					// })
+					// this.setPromptDisplay(pushDisplay)
+					// this.showPrompt()
 				}
 			}
 		},

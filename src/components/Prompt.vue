@@ -59,7 +59,7 @@
                     id = node.dataset.id
                 }
                 if (this.getWhetherChoosingStart) {
-                    that.getListAll.map(function (item, index) {
+                    that.getPromptDisplay.map(function (item, index) {
                         if (item) {
                             if (item.unique_id == id) {
                                 that.setStartCoordinate(item.coordinate)
@@ -73,7 +73,7 @@
                     this.closeList()
                     this.closeSearchFloat()
                 } else if (this.getWhetherChoosingDest) {
-                    that.getListAll.map(function (item, index) {
+                    that.getPromptDisplay.map(function (item, index) {
                         if (item) {
                             if (item.unique_id == id) {
                                 that.setDirectionCoordinate(item.coordinate)
