@@ -13,8 +13,8 @@
 	</div>
 </template>
 <script>
-	import { getListAll } from '../getters'
-	import { setDisplayDetail, showDetail } from '../actions/detail'
+	import { getListAll, getListDisplay } from '../getters'
+	import { setDisplayDetail, showDetail, showBusiness, showBase } from '../actions/detail'
 	import { setStart, setDest } from '../actions/navigate'
 	import { closeList } from '../actions/list'
     import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
@@ -26,7 +26,8 @@
 		props: ['img', 'title', 'content', 'unique_id', 'picture', 'location'],
 		vuex: {
 			getters: {
-				getListAll
+				getListAll,
+				getListDisplay
 			},
 			actions: {
 				setDisplayDetail,
@@ -39,7 +40,9 @@
 				showSearchNav,
 				showNavigate,
 				notChoosingDest,
-				notChoosingStart
+				notChoosingStart,
+				showBase,
+				showBusiness
 			}
 		},
 		methods: {
@@ -66,6 +69,15 @@
 				for(let item of that.getListAll) {
 					if (item) {
 						if (item.unique_id == e.target.dataset.id) {
+							if (this.getListDisplay[0]) {
+								if (this.getListDisplay[0].business_name) {
+									this.showBusiness()
+								} else {
+									this.showBase()
+								}
+							} else {
+								this.showBase()
+							}
 							that.setDisplayDetail(item)
 							that.showDetail()
 							break

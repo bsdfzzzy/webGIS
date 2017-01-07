@@ -51,15 +51,15 @@
 			}
 		},
 		ready: function () {
-			if (this.getListDisplay[0]) {
-				if (this.getListDisplay[0].business_name) {
-					this.showBusiness()
-				} else {
-					this.showBase()
-				}
-			} else {
-				this.showBase()
-			}
+			// if (this.getListDisplay[0]) {
+			// 	if (this.getListDisplay[0].business_name) {
+			// 		this.showBusiness()
+			// 	} else {
+			// 		this.showBase()
+			// 	}
+			// } else {
+			// 	this.showBase()
+			// }
 		}
 	}
 </script>

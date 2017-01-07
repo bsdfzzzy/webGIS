@@ -35,7 +35,7 @@
 	import { setDestId, closeInstruction } from '../actions/instruction'
 	import { showBusinesses } from '../actions/list'
 	import { setDirectionCoordinate } from '../actions/coordinate'
-	import { showDetail, setDisplayDetail } from '../actions/detail'
+	import { showDetail, setDisplayDetail, showBusiness, showBase } from '../actions/detail'
 
 	export default {
 		vuex: {
@@ -53,7 +53,9 @@
 				closeInstruction,
 				showDetail,
 				setDisplayDetail,
-				showBusinesses
+				showBusinesses,
+				showBusiness,
+				showBase
 			}
 		},
 		data () {
@@ -81,6 +83,7 @@
 			},
 			showItsDetail () {
 				let intro = this.getIntro
+				this.showBase()
 				this.setDisplayDetail(intro)
 				this.showDetail()
 			},
@@ -92,7 +95,7 @@
 			},
 			getIntoBusiness () {
 				let that = this
-				this.showBusinesses()
+				this.showBusiness()
 				let id = this.getIntro.unique_id
 				for(let item of that.getListAll) {
 					if (item) {

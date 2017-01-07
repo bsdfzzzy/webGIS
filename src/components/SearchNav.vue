@@ -7,7 +7,8 @@
 					<img src="/static/img/Nav_search.png" width="20px" height="20px" />
 					<span>Search...</span>
 				</div>
-				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" @keyup.enter="searchResult">
+				<!--<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" @keyup.enter="searchResult">-->
+				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue">
 			</div>
 		</div>
 		<list-button :rightType="righttype"></list-button>

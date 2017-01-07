@@ -11,7 +11,7 @@
 					<input type="text" name="to" placeholder="{{getDest.title}}" @click="showDestSearchFloat" :value="direction" v-model="direction">
 					<span style="color: red;" id="checkDest" v-if="!checkDest">请选择以上正确格式的建筑名称</span>
 				</div>
-				<div class="chooseStartBox" id="chooseStartBox" v-if="getShowChooseStart">
+				<!--<div class="chooseStartBox" id="chooseStartBox" v-if="getShowChooseStart">
 					<div class="closeChoose" @click="closeChoose">×</div>
 					<ul>
 						<li v-for="start in getShowStarts" @click="selectStart" data-id="{{start.id}}">{{start.title}}</li>
@@ -22,7 +22,7 @@
 					<ul>
 						<li v-for="direction in getShowDirections" @click="selectDirection" data-id="{{direction.id}}">{{direction.title}}</li>
 					</ul>
-				</div>
+				</div>-->
 			</div>
 				<button class="navigateButtonContainer" :disabled="!getDisableButton" @click="pathNavigate"><img src="/static/img/Button_Route.png" width="17px" height="17px" />   路径规划</button>
 			</div>
@@ -380,6 +380,7 @@
 		border-bottom: 1px dashed #888;
 		padding-left: 10px;
 		margin-top: 4px;
+		font-weight: bolder;
 	}
 	.chooseStartBox {
 		width: 100%;
