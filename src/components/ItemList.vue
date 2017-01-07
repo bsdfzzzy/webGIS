@@ -206,7 +206,7 @@
 	}
 	.listContentNoResult {
 		width: 100%;
-		height: 60px;
+		height: 100%;
 		position: absolute;
 		top: 80px;
 		line-height: 60px;

@@ -5,7 +5,7 @@
         <template v-if="getShowPrompt">
             <prompt></prompt>
         </template>
-        <div v-if="getPromptDisplay.length == 0 && getShowPrompt" class="noResult">没有搜索结果</div>
+        <div v-if="getPromptDisplay.length == 0 && getShowPrompt" class="noResult"><span>没有搜索结果<span></div>
     </div>
 </template>
 <script>
@@ -53,12 +53,15 @@
     }
     .noResult {
         width: 100%;
-        height: 60px;
+        height: calc(100% - 40px);
         position: absolute;
         top: 0;
-        line-height: 60px;
-        padding-left: 30px;
-        border-bottom: 1px solid rgba(240, 240, 240, 1);
+        text-align: center;
         color: #777;
+        background: rgb(240, 240, 240);
+    }
+    .noResult span{
+        display: inline-block;
+        margin-top: 50%;
     }
 </style>
