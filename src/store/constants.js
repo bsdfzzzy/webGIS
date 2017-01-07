@@ -77,6 +77,9 @@ export const SET_BLOCKS = 'SET_BLOCKS'
 export const SET_BUSINESSES = 'SET_BUSINESSES'
 export const SET_TEAMS = 'SET_TEAMS'
 export const SET_DISPLAY = 'SET_DISPLAY'
+export const SHOW_NOT_ALL_BLOCKS = 'SHOW_NOT_ALL_BLOCKS'
+export const SHOW_NOT_ALL_BUSINESSES = 'SHOW_NOT_ALL_BUSINESSES'
+export const SHOW_NOT_ALL_TEAMS = 'SHOW_NOT_ALL_TEAMS'
 
 // Prompt
 export const SHOW_PROMPT = 'SHOW_PROMPT'

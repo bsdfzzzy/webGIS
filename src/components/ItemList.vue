@@ -11,9 +11,9 @@
 			</div>
 		</div>
 		<div class="listNav">
-			<div :class="getNowSelectItem == 'blocks' ? 'activeItem navItem' : 'navItem'" @click="showBlocks">楼栋</div>
-			<div :class="getNowSelectItem == 'teams' ? 'activeItem navItem' : 'navItem'" @click="showTeams">团队</div>
-			<div :class="getNowSelectItem == 'businesses' ? 'activeItem navItem' : 'navItem'" @click="showBusinesses">业务</div>
+			<div :class="getNowSelectItem == 'blocks' ? 'activeItem navItem' : 'navItem'" @click="showItsBlocks">楼栋</div>
+			<div :class="getNowSelectItem == 'teams' ? 'activeItem navItem' : 'navItem'" @click="showItsTeams">团队</div>
+			<div :class="getNowSelectItem == 'businesses' ? 'activeItem navItem' : 'navItem'" @click="showItsBusinesses">业务</div>
 		</div>
 		<div class="listContent" v-if="getListDisplay.length != 0">
 			<item v-for="display in getListDisplay" :location="display.location" :img="display.img" :title="display.title" :content="display.desc" :unique_id="display.unique_id" :picture="display.picture"></item>
@@ -27,9 +27,10 @@
 	import Item from './Item.vue'
 	import SearchNav from './SearchNav'
 	import axios from 'axios'
-	import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams, closeList, setDisplay } from '../actions/list'
+	import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams, closeList, setDisplay, showNotAllBlocks, showNotAllBusinesses,
+		 showNotAllTeams } from '../actions/list'
     import { closeSearchFloat, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
-	import { getListDisplay, getOldDisplay, getNowSelectItem } from '../getters'
+	import { getListDisplay, getOldDisplay, getNowSelectItem, getListBlocks, getListBusinesses, getListTeams } from '../getters'
 	import { closeSearchResult } from '../actions/searchResult'
 	import { showSearchNav } from '../actions/searchNav'
 	import { showNavigate } from '../actions/navigate'
@@ -48,7 +49,10 @@
 			getters: {
 				getListDisplay,
 				getOldDisplay,
-				getNowSelectItem
+				getNowSelectItem,
+				getListTeams,
+				getListBlocks,
+				getListBusinesses
 			},
 			actions: {
 				showBlocks,
@@ -64,7 +68,10 @@
 				showNavigate,
 				notChoosingDest,
 				notChoosingStart,
-				setDisplay
+				setDisplay,
+				showNotAllBlocks,
+				showNotAllBusinesses,
+				showNotAllTeams
 			}
 		},
 		methods: {
@@ -76,7 +83,61 @@
 				this.showNavigate()
 				this.notChoosingStart()
 				this.notChoosingDest()
-            }
+            },
+			showItsBlocks () {
+				let that = this
+				if (this.searchValue == "") {
+					that.showBlocks()
+				} else {
+					let pushDisplay = []
+					for (let item of that.getListBlocks) {
+						let matcher = eval('/' + that.searchValue + '/')
+						if (item) {
+							if (item.title.match(matcher) || item.detail.match(matcher)) {
+								pushDisplay.push(item)
+							}
+						}
+					}
+					that.setDisplay(pushDisplay)
+					that.showNotAllBlocks()
+				}
+			},
+			showItsBusinesses () {
+				let that = this
+				if (this.searchValue == "") {
+					that.showBusinesses()
+				} else {
+					let pushDisplay = []
+					for (let item of that.getListBusinesses) {
+						let matcher = eval('/' + that.searchValue + '/')
+						if (item) {
+							if (item.title.match(matcher) || item.detail.match(matcher)) {
+								pushDisplay.push(item)
+							}
+						}
+					}
+					that.setDisplay(pushDisplay)
+					that.showNotAllBusinesses()
+				}
+			},
+			showItsTeams () {
+				let that = this
+				if (this.searchValue == "") {
+					that.showTeams()
+				} else {
+					let pushDisplay = []
+					for (let item of that.getListTeams) {
+						let matcher = eval('/' + that.searchValue + '/')
+						if (item) {
+							if (item.title.match(matcher) || item.detail.match(matcher)) {
+								pushDisplay.push(item)
+							}
+						}
+					}
+					that.setDisplay(pushDisplay)
+					that.showNotAllTeams()
+				}
+			}
         },
 		watch: {
 			searchValue: function (newValue) {

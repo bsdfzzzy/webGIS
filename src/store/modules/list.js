@@ -7,7 +7,8 @@ const state = {
 	teams: [],
 	oldDisplay: [],
 	display: [],
-	nowSelect: "blocks"
+	nowSelect: "blocks",
+	searchKey: ''
 }
 
 const mutations = {
@@ -30,6 +31,15 @@ const mutations = {
 	[types.SHOW_TEAMS] (state) {
 		state.oldDisplay = state.teams
 		state.display = state.teams
+		state.nowSelect = 'teams'
+	},
+	[types.SHOW_NOT_ALL_BLOCKS] (state) {
+		state.nowSelect = 'blocks'
+	},
+	[types.SHOW_NOT_ALL_BUSINESSES] (state) {
+		state.nowSelect = 'businesses'
+	},
+	[types.SHOW_NOT_ALL_TEAMS] (state) {
 		state.nowSelect = 'teams'
 	},
 	[types.SET_BLOCKS] (state, blocks) {
