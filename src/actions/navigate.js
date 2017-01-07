@@ -66,3 +66,11 @@ export const setCheckDest = ({dispatch}, ...args) => {
 export const setRoute = ({dispatch}, ...args) => {
 	return dispatch(types.SET_ROUTE, ...args)
 }
+
+export const showNavigateContent = ({dispatch}, ...args) => {
+	return dispatch(types.SHOW_NAVIGATE_CONTENT, ...args)
+}
+
+export const closeNavigateContent = ({dispatch}, ...args) => {
+	return dispatch(types.CLOSE_NAVIGATE_CONTENT, ...args)
+}

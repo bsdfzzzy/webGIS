@@ -80,6 +80,7 @@
         },
 		watch: {
 			searchValue: function (newValue) {
+				console.log(newValue)
 				let that = this
 				let pushDisplay = []
 				if (newValue == "") {

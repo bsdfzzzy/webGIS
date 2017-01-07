@@ -4,6 +4,7 @@ import ol from 'openlayers/dist/ol.js'
 
 const state = {
     whetherShowNavigate: true,
+    whetherShowNavigateContent: false,
   	start: {
       title: "请输入起点"
     },
@@ -45,6 +46,7 @@ const styles = {
 const mutations = {
   [types.SHOW_NAVIGATE] (state) {
     state.whetherShowNavigate = true
+    state.whetherShowNavigateContent = false
   },
   [types.CLOSE_NAVIGATE] (state) {
     state.whetherShowNavigate = false
@@ -148,6 +150,14 @@ const mutations = {
   },
   [types.SET_ROUTE] (state, route) {
     state.route = route
+  },
+  [types.SHOW_NAVIGATE_CONTENT] (state) {
+    state.whetherShowNavigateContent = true
+    state.whetherShowNavigate = false
+  },
+  [types.CLOSE_NAVIGATE_CONTENT] (state) {
+    state.whetherShowNavigateContent = false
+    state.whetherShowNavigate = true
   }
 }
 

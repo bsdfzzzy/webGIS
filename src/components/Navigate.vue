@@ -36,7 +36,7 @@
 	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, 
 		disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, 
 		closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, 
-		showPartialDirections, setRoute } from '../actions/navigate'
+		showPartialDirections, setRoute, showNavigateContent } from '../actions/navigate'
 	import { setDestId } from '../actions/instruction'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
 	import { showSearchFloat, choosingStart, choosingDest, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
@@ -100,7 +100,8 @@
 				notChoosingStart,
 				notChoosingDest,
 				showSearchFloat,
-				setRoute
+				setRoute,
+				showNavigateContent
 			}
 		},
 		methods: {
@@ -213,13 +214,14 @@
 							})
 						})
 						map.addLayer(pathResult)
+						that.showNavigateContent()
 					}
 				}).catch(function (e) {
 					console.log(e)
 				})
 				
 				let view = window.map.getView()
-				let resolution = view.getResolution()				
+				let resolution = view.getResolution()		
       			// let styles = {
         		// 	'route': new ol.style.Style({
           		// 		stroke: new ol.style.Stroke({

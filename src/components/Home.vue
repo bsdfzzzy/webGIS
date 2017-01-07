@@ -8,6 +8,7 @@
 		<search-result v-if="getShowSearchResult"></search-result>
 		<item-list v-if="getShowList"></item-list>
 		<detail v-if="getShowDetail"></detail>
+		<navigate-content v-if="getShowNavigateContent"></navigate-content>
 	</div>
 </template>
 <script>
@@ -15,11 +16,13 @@
 	import SearchNav from './SearchNav'
 	import Instruction from './Instruction'
 	import Navigate from './Navigate'
+	import NavigateContent from './NavigateContent'
 	import SearchFloat from './SearchFloat'
 	import SearchResult from './SearchResult'
 	import ItemList from './ItemList'
 	import Detail from './Detail'
-	import { getShowDetail, getShowSearchNav, getShowList, getShowSearchResult ,getShowInstruction, getShowNavigate, getBriefContent, getBriefTitle, getShowSearchFloat, getWhetherShowTypeButton } from '../getters'
+	import { getShowDetail, getShowSearchNav, getShowList, getShowSearchResult ,getShowInstruction, getShowNavigate, 
+		getBriefContent, getBriefTitle, getShowSearchFloat, getWhetherShowTypeButton, getShowNavigateContent } from '../getters'
 
 	export default {
 		components: {
@@ -30,7 +33,8 @@
 			SearchFloat,
 			SearchResult,
 			ItemList,
-			Detail
+			Detail,
+			NavigateContent
 		},
 		vuex: {
 			getters: {
@@ -42,7 +46,8 @@
 				getShowSearchResult,
 				getShowList,
 				getShowSearchNav,
-				getShowDetail
+				getShowDetail,
+				getShowNavigateContent
 			},
 			actions: {
 				

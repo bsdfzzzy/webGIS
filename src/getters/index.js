@@ -221,3 +221,7 @@ export function getShowIndoor (state) {
 export function getShowBusiness (state) {
 	return state.instruction.whetherShowBusiness
 }
+
+export function getShowNavigateContent (state) {
+	return state.navigate.whetherShowNavigateContent
+}
