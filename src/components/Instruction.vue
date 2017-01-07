@@ -1,19 +1,19 @@
 <template>
 	<div class="instruction">
 		<div class="brief">
-			<div class="scroll" @click.stop.prevent="toggle">
+			<!--<div class="scroll" @click.stop.prevent="toggle">
 				<img :src="up ? '/static/img/Panel_arrow-up.png' : '/static/img/Panel_arrow-down.png'" width="30px" />	
-			</div>
+			</div>-->
 			<div class="brief-ins">
-				<img :src="getIntro.picture" width="60px" height="60px" class="brief-ins-logo" v-if="!up">
+				<img :src="getIntro.picture" width="60px" height="60px" class="brief-ins-logo">
 				<div class="brief-ins-content">
-					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="up && getIntro.location">{{getIntro.location}}</span></p>
-					<p style="font-size: 13px;" v-if="!up">{{getIntro.desc}}</p>
-					<p v-if="!up && getIntro.location">{{getIntro.location}}</p>
-					<p v-if="!up && getIntro.telephone">{{getIntro.telephone}}</p>
+					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="getIntro.location">{{getIntro.location}}</span></p>
+					<p style="font-size: 13px;">{{getIntro.desc}}</p>
+					<p v-if="getIntro.location">{{getIntro.location}}</p>
+					<p v-if="getIntro.telephone">{{getIntro.telephone}}</p>
 				</div>	
 			</div>
-			 <div class="menu" v-if="!up">
+			 <div class="menu">
 				<div class="" @click="showItsDetail">详情</div>
 				<template v-if="getShowIndoor">
 					<div class="panorama" @click="getIntoBuilding">室内</div>
