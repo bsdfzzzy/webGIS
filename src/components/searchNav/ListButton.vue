@@ -4,8 +4,8 @@
 	</div>
 	<div class="chooseIndoor" v-if="showChoose">
 		<ul>
-			<li :class="choose == 'activityCenter' ? 'active' : ''" @click="setChoose('activityCenter')">活动中心</li>
-			<li :class="choose == 'createPlace' ? 'active' : ''" @click="setChoose('createPlace')">众创空间</li>
+			<li @click="setChoose('activityCenter')">活动中心</li>
+			<li @click="setChoose('createPlace')">众创空间</li>
 		</ul>
 	</div>
 </template>
@@ -22,28 +22,27 @@
 		data () {
 			return {
 				showChoose: false,
-				choose: "",
 			}
 		},
 		methods: {
 			setChoose: function (str) {
-				this.choose = str
+				let view = map.getView()
 				this.showChoose = !this.showChoose
+				switch (str) {
+					case 'activityCenter':
+						view.setCenter([103.92685, 30.75790])
+						view.setZoom(6)
+						break
+					case 'createPlace':
+						view.setCenter([103.930201536, 30.7472126727])
+						view.setZoom(4)
+						break
+					default: 
+						break
+				}
 			},
 			showChooseBox: function () {
 				this.showChoose = !this.showChoose
-			}
-		},
-		watch: {
-			choose: function (newChoose) {
-				let view = map.getView()
-				if (newChoose == 'activityCenter') {
-					view.setCenter([103.92685, 30.75790])
-					view.setZoom(6)
-				} else if (newChoose == 'createPlace') {
-					// view.setCenter([])
-					// view.setZoom(6)
-				}
 			}
 		}
 	}
