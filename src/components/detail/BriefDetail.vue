@@ -1,6 +1,6 @@
 <template>
 	<div class="briefDetail">
-		<img src="#" width="50px" height="50px" class="detailImg">
+		<img :src="getDetail.picture" width="50px" height="50px" class="detailImg">
 		<div class="briefDetailContent">
 			<p><strong>{{getDetail.title}}</strong></p>
 			<p v-if="getDetail.location" style="font-size: 13px; color: 888;">地址：{{getDetail.location}}</p>
