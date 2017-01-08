@@ -264,8 +264,8 @@
       map.getView().fit(bounds, map.getSize())
 
       // Initial User Position
+      let userCoor = this.getUserCoordinate
       if (that.getInitialUniqueId != 0) {
-        let userCoor = this.getUserCoordinate
         let user = new ol.Feature({
           geometry: new ol.geom.Point(userCoor)
         })
@@ -298,11 +298,10 @@
             that.setStart(data.team)
           }
         })
+      } else {
+        view.setCenter(userCoor)
+        view.setZoom(1)
       }
-      // } else {
-      //   view.setCenter()
-      //   view.setZoom(1)
-      // }
       // overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       let f1_layer = new ol.layer.Image({
