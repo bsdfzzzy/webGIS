@@ -180,6 +180,9 @@
           window.map.removeLayer(f3_layer)
           window.map.addLayer(f4_layer)
         }
+        if (window.pathResult) {
+          map.removeLayer(pathResult)
+        }
         if (route[Number(floor) - 1]) {
           let lineFeature = new ol.Feature({
 						geometry: new ol.geom.LineString(route[Number(floor - 1)])
