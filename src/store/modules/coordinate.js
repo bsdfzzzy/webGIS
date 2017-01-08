@@ -6,7 +6,7 @@ const state = {
   direction: [103.93056, 30.74784],
   type: 'outdoor',
   floor: 1,
-  uniqueId: 0,
+  uniqueId: 63,
   buildingCoordinate: []
 }
 

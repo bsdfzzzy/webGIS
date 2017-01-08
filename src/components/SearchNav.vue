@@ -2,13 +2,13 @@
 	<div class="searchNav">
 		<type-button v-if="whethershowtypebutton"></type-button>
 		<div class="searchBox">
-			<div class="searchColumn">
+			<div class="searchColumn"  @click="showList">
 				<div class="inputBack" v-if="!focus && (keyword == '' || keyword == undefined)">
 					<img src="/static/img/Nav_search.png" width="20px" height="20px" />
 					<span>Search...</span>
 				</div>
 				<!--<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" @keyup.enter="searchResult">-->
-				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" :disabled="disable">
+				<input type="search" name="searchBox" class="searchInput" @blur="offFocus" @focus="onFocus" v-model="searchValue" :disabled="disable">
 			</div>
 		</div>
 		<list-button :rightType="righttype"></list-button>
