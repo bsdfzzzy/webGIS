@@ -225,3 +225,15 @@ export function getShowBusiness (state) {
 export function getShowNavigateContent (state) {
 	return state.navigate.whetherShowNavigateContent
 }
+
+export function getInitialType (state) {
+	return state.coordinate.type
+}
+
+export function getInitialFloor (state) {
+	return state.coordinate.floor
+}
+
+export function getInitialUniqueId (state) {
+	return state.coordinate.uniqueId
+}

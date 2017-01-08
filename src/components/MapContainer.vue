@@ -21,14 +21,14 @@
 <script>
 	import ol from 'openlayers/dist/ol.js'
   import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro, showItsIndoor, showItsBusiness } from '../actions/instruction'
-  import { showNavigate, closeNavigate } from '../actions/navigate'
+  import { showNavigate, closeNavigate, setStart } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
   import { setHots } from '../actions/hot'
   import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams } from '../actions/list'
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
     getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
-    getListAll, getRoute } from '../getters'
+    getListAll, getRoute, getInitialType, getInitialFloor, getInitialUniqueId } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -47,7 +47,10 @@
         getF4Layer,
         getLayers,
         getListAll,
-        getRoute
+        getRoute,
+        getInitialType,
+        getInitialFloor,
+        getInitialUniqueId
       },
       actions: {
         showInstruction,
@@ -73,7 +76,8 @@
         setIntro,
         setHots,
         showItsIndoor,
-        showItsBusiness
+        showItsBusiness,
+        setStart
       }
     },
   	methods: {
@@ -276,7 +280,20 @@
       })
       map.getView().fit(bounds, map.getSize())
       view.setCenter(userCoor)
-      view.setZoom(3)
+      if (that.getInitialType == 'outdoor') {
+        view.setZoom(3)
+      } else {
+        view.setZoom(6)
+      }
+      axios.get(`http://map.gugoo.cc/get_detail?unique_id=${that.getInitialUniqueId}`).then(res => {
+        let data = res.data
+        if (data.building.title) {
+          that.setStart(data.building)
+        } else if (data.team.title) {
+          console.log(data.team)
+          that.setStart(data.team)
+        }
+      })
       // overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       let f1_layer = new ol.layer.Image({

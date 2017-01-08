@@ -3,7 +3,7 @@ import coordinate from './coordinate'
 import ol from 'openlayers/dist/ol.js'
 
 const state = {
-  	nowFloor: 1,
+  	nowFloor: coordinate.state.floor,
 	mapLayer: "",
 	vectorLayer: "",
 	f1_layer: "",
