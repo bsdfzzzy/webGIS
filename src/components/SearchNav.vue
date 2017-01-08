@@ -157,6 +157,8 @@
 		width: 90%;
 		height: 100%;
 		outline: none;
+		background: rgba(0, 0, 0, 0);
+		border: 0;
 	}
 	.inputBack {
 		color: #aaa;
