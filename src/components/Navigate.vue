@@ -5,10 +5,10 @@
 			<div class="mainContent">
 				<div class="fromAndTo">
 					<!--<input type="text" name="from" placeholder="{{getStart}}" v-model="start" @focus="showStartChoose">-->
-					<input type="text" name="from" placeholder="{{getStart.title}}" v-model="start" @click="showStartSearchFloat">
+					<input type="text" name="from" :value="getStart.title" @click="showStartSearchFloat" :class="getStart.unique_id ? 'choosed' : 'notChoosed'">
 					<span style="color: red;" id="checkStart" v-if="!checkStart">请选择以上正确格式的建筑名称</span>
 					<!--<input type="text" name="to" placeholder="{{getDest}}" @focus="showDirectionChoose" :value="direction" v-model="direction">-->
-					<input type="text" name="to" placeholder="{{getDest.title}}" @click="showDestSearchFloat" :value="direction" v-model="direction">
+					<input type="text" name="to" @click="showDestSearchFloat" :value="getDest.title" :class="getDest.unique_id ? 'choosed' : 'notChoosed'">
 					<span style="color: red;" id="checkDest" v-if="!checkDest">请选择以上正确格式的建筑名称</span>
 				</div>
 				<!--<div class="chooseStartBox" id="chooseStartBox" v-if="getShowChooseStart">
@@ -426,5 +426,13 @@
 		font-weight: 400;
 		margin-top: 10px;
 		border: 0;
+	}
+	.choosed {
+		color: #000;
+		font-weight: bolder;
+	}
+	.notChoosed {
+		color: #bbb;
+		font-weight: normal;
 	}
 </style>

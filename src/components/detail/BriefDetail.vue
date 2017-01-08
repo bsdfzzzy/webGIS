@@ -3,6 +3,8 @@
 		<img src="#" width="50px" height="50px" class="detailImg">
 		<div class="briefDetailContent">
 			<p><strong>{{getDetail.title}}</strong></p>
+			<p v-if="getDetail.location" style="font-size: 13px; color: 888;">地址：{{getDetail.location}}</p>
+			<p v-if="getDetail.telephone" style="font-size: 13px; color: 888;">电话：{{getDetail.telephone}}</p>
 		</div>
 		<img src="/static/img/route.png" width="50px" height="50px" class="route" @click="setDestination">
 	</div>

@@ -9,8 +9,8 @@
 				<div class="brief-ins-content">
 					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="getIntro.location">{{getIntro.location}}</span></p>
 					<p style="font-size: 13px;">{{getIntro.desc}}</p>
-					<p v-if="getIntro.location">{{getIntro.location}}</p>
-					<p v-if="getIntro.telephone">{{getIntro.telephone}}</p>
+					<p v-if="getIntro.location" style="font-size: 13px; color: 888;">地址：{{getIntro.location}}</p>
+					<p v-if="getIntro.telephone" style="font-size: 13px; color: 888;">电话：{{getIntro.telephone}}</p>
 				</div>	
 			</div>
 			 <div class="menu">
