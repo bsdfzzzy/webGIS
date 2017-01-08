@@ -7,7 +7,7 @@
 			<p class="itemContentDesc" v-if="content">{{content}}</p>
 		</div>
 		<div class="itemButtonContainer">
-			<div class="setThisToStart" @click="setToDest" data-id="{{unique_id}}" v-if="content">去这里</div>
+			<div class="setThisToStart" @click="setToDest" data-id="{{unique_id}}" v-if="type">去这里</div>
 			<div class="itemDetail" @click="routeToDetail" data-id="{{unique_id}}">详情</div>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 	import { showNavigate } from '../actions/navigate'
 
 	export default {
-		props: ['img', 'title', 'content', 'unique_id', 'picture', 'location'],
+		props: ['img', 'title', 'content', 'unique_id', 'picture', 'location', 'type'],
 		vuex: {
 			getters: {
 				getListAll,

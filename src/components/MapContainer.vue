@@ -225,7 +225,6 @@
         3.3527612686157227e-7,
         1.6763806343078613e-7
       ];
-      let userCoor = this.getUserCoordinate
       let projection = new ol.proj.Projection({
         code: 'EPSG:4326',
         units: 'degrees',
@@ -236,17 +235,7 @@
         resolutions: resolutions,
         maxZoom: 7,
       })
-      let user = new ol.Feature({
-        geometry: new ol.geom.Point(userCoor)
-      })
-      user.setId(0)
-      user.setStyle(new ol.style.Style({
-        image: new ol.style.Icon(({
-          anchor: [0.5, 0.5],
-          src: '/static/img/user.png',
-          scale: 0.3
-        }))
-      }))
+      
       // let thumbnail = new ol.Feature({
       //   geometry: new ol.geom.Point([103.93056, 30.74784])
       // })
@@ -258,15 +247,9 @@
       //     scale: 0.1
       //   }))
       // }))
-      let vectorSource = new ol.source.Vector({
-        features: [user]
-      });
-      let vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-      });
+      
       let wms = this.loadMap()
       that.setMapLayer(wms)
-      that.setVectorLayer(vectorLayer)
       that.setLayers()
       window.map = new ol.Map({
         controls: ol.control.defaults({
@@ -279,21 +262,47 @@
         view: view
       })
       map.getView().fit(bounds, map.getSize())
-      view.setCenter(userCoor)
-      if (that.getInitialType == 'outdoor') {
-        view.setZoom(3)
-      } else {
-        view.setZoom(6)
-      }
-      axios.get(`http://map.gugoo.cc/get_detail?unique_id=${that.getInitialUniqueId}`).then(res => {
-        let data = res.data
-        if (data.building.title) {
-          that.setStart(data.building)
-        } else if (data.team.title) {
-          console.log(data.team)
-          that.setStart(data.team)
+
+      // Initial User Position
+      if (that.getInitialUniqueId != 0) {
+        let userCoor = this.getUserCoordinate
+        let user = new ol.Feature({
+          geometry: new ol.geom.Point(userCoor)
+        })
+        user.setId(0)
+        user.setStyle(new ol.style.Style({
+          image: new ol.style.Icon(({
+            anchor: [0.5, 0.5],
+            src: '/static/img/user.png',
+            scale: 0.3
+          }))
+        }))
+        let vectorSource = new ol.source.Vector({
+          features: [user]
+        })
+        let vectorLayer = new ol.layer.Vector({
+          source: vectorSource
+        })
+        that.setVectorLayer(vectorLayer)
+        view.setCenter(userCoor)
+        if (that.getInitialType == 'outdoor') {
+          view.setZoom(3)
+        } else {
+          view.setZoom(6)
         }
-      })
+        axios.get(`http://map.gugoo.cc/get_detail?unique_id=${that.getInitialUniqueId}`).then(res => {
+          let data = res.data
+          if (data.building.title) {
+            that.setStart(data.building)
+          } else if (data.team.title) {
+            that.setStart(data.team)
+          }
+        })
+      }
+      // } else {
+      //   view.setCenter()
+      //   view.setZoom(1)
+      // }
       // overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       let f1_layer = new ol.layer.Image({

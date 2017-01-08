@@ -16,7 +16,7 @@
 			<div :class="getNowSelectItem == 'businesses' ? 'activeItem navItem' : 'navItem'" @click="showItsBusinesses">业务</div>
 		</div>
 		<div class="listContent" v-if="getListDisplay.length != 0">
-			<item v-for="display in getListDisplay" :location="display.location" :img="display.img" :title="display.title" :content="display.desc" :unique_id="display.unique_id" :picture="display.picture"></item>
+			<item v-for="display in getListDisplay" :location="display.location" :type="display.type" :img="display.img" :title="display.title" :content="display.desc" :unique_id="display.unique_id" :picture="display.picture"></item>
 		</div>
 		<div class="listContentNoResult" v-if="getListDisplay.length == 0">
 			没有搜索结果
