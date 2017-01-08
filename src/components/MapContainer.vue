@@ -377,7 +377,7 @@
         let view = map.getView()
         let resolution = view.getResolution()
         let ul_ = document.getElementById('chooseFloor')
-        if (resolution <= 0.000001341104507446289) {
+        if (resolution < 0.000002682209014892578) {
           ul_.style.display = 'block'
         } else {
           ul_.style.display = 'none'
