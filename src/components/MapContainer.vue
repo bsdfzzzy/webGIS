@@ -390,7 +390,7 @@
         let view2Resolution = view2.getResolution()
         let source2
         let url
-        if (view2Resolution <= 0.000001341104507446289) {
+        if (view2Resolution < 0.000002682209014892578) {
           switch(that.getMapFloor) {
             case 1:
               source2 = f1_layer.getSource()
