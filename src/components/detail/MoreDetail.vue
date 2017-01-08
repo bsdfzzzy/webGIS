@@ -10,8 +10,8 @@
 		</nav>
 		<template class="moreDetailBaseContainer" v-if="getShowDetailBase">
 			<template v-if="!getDetail.detail">
-				<div class="moreDetailBase">
-					暂无基本信息
+				<div class="noMoreDetailBase">
+					没有更多信息
 				</div>
 			</template>
 			<template v-else>
@@ -19,15 +19,15 @@
 			</template>
 		</template>
 		<template class="moreDetailBusinessContainer" v-if="getShowDetailBusiness">
-			<template v-if="getDetail.business">
+			<template v-if="getDetail.business.length != 0">
 				<template v-for="officeBusiness in getDetail.business">
 					<p class="moreDetailBusiness">{{officeBusiness.business_name}}</p>
 					<div v-html="officeBusiness.business_detail" class="moreDetailBusiness"></div>
 				</template>
 			</template>
 			<template v-else>
-				<div class="moreDetailBusiness">
-					暂无业务信息
+				<div class="noMoreDetailBusiness">
+					没有更多信息
 				</div>
 			</template>
 		</template>
@@ -99,5 +99,17 @@
 	}
 	.moreDetailBusiness {
 		padding: 40px;
+	}
+	.noMoreDetailBusiness {
+		color: #888;
+		text-align: center;
+		width: 100%;
+		margin-top: 50%;
+	}
+	.noMoreDetailBase {
+		color: #888;
+		text-align: center;
+		width: 100%;
+		margin-top: 50%;
 	}
 </style>

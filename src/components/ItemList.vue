@@ -206,12 +206,13 @@
 	}
 	.listContentNoResult {
 		width: 100%;
-		height: 100%;
+		height: calc(100% - 80px);
 		position: absolute;
 		top: 80px;
 		line-height: 60px;
-		padding-left: 30px;
+		text-align: center;
+		padding-top: 50%;
 		color: #999;
-		border-bottom: 1px solid rgb(240, 240, 240);
+		background: rgb(240, 240, 240);
 	}
 </style>
