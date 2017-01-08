@@ -8,7 +8,7 @@
 					<span>Search...</span>
 				</div>
 				<!--<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" @keyup.enter="searchResult">-->
-				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue">
+				<input type="search" name="searchBox" class="searchInput" @click="showList" @blur="offFocus" @focus="onFocus" v-model="searchValue" :disabled="disable">
 			</div>
 		</div>
 		<list-button :rightType="righttype"></list-button>
@@ -31,7 +31,7 @@
 	import BackButton from './searchNav/BackButton'
 
 	export default {
-		props: ['whethershowtypebutton', 'righttype', 'keyword'],
+		props: ['whethershowtypebutton', 'righttype', 'keyword', 'disable'],
 		components: {
 			TypeButton,
 			ListButton,

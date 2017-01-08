@@ -250,18 +250,6 @@
       
       let wms = this.loadMap()
       that.setMapLayer(wms)
-      that.setLayers()
-      window.map = new ol.Map({
-        controls: ol.control.defaults({
-          attribution: false
-        }),
-        target: 'map',
-        overlays: [overlay],
-        layers: that.getLayers
-        ,
-        view: view
-      })
-      map.getView().fit(bounds, map.getSize())
 
       // Initial User Position
       let userCoor = this.getUserCoordinate
@@ -300,8 +288,20 @@
         })
       } else {
         view.setCenter(userCoor)
-        view.setZoom(1)
+        view.setZoom(0)
       }
+      that.setLayers()
+      window.map = new ol.Map({
+        controls: ol.control.defaults({
+          attribution: false
+        }),
+        target: 'map',
+        overlays: [overlay],
+        layers: that.getLayers,
+        view: view
+      })
+      // map.getView().fit(bounds, map.getSize())
+      
       // overlay.setPosition(userCoor)
       content.innerHTML = '<p>我的位置</p>';
       let f1_layer = new ol.layer.Image({

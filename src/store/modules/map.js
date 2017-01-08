@@ -37,9 +37,17 @@ const mutations = {
 	},
 	[types.SET_LAYERS] (state, f_layer) {
 		if (f_layer) {
-			state.layers = [state.mapLayer, state.vectorLayer, f_layer]
+			if (state.vectorLayer) {
+				state.layers = [state.mapLayer, state.vectorLayer, f_layer]
+			} else {
+				state.layers = [state.mapLayer, f_layer]
+			}
 		} else {
-			state.layers = [state.mapLayer, state.vectorLayer]
+			if (state.vectorLayer) {
+				state.layers = [state.mapLayer, state.vectorLayer]
+			} else {
+				state.layers = [state.mapLayer]
+			}
 		}
 	}
 }

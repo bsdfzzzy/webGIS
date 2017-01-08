@@ -1,6 +1,6 @@
 <template>
 	<div class="home">
-		<search-nav :whetherShowTypeButton="show" :rightType="type" v-if="getShowSearchNav"></search-nav>
+		<search-nav :whetherShowTypeButton="show" :rightType="type" v-if="getShowSearchNav" :disable="true"></search-nav>
 		<map-container></map-container>
 		<instruction v-if="getShowInstruction" transition="expand" :title="getBriefTitle" :content="getBriefContent"></instruction>
 		<navigate v-if="getShowNavigate" transition="expand"></navigate>
