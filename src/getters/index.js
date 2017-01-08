@@ -237,3 +237,27 @@ export function getInitialFloor (state) {
 export function getInitialUniqueId (state) {
 	return state.coordinate.uniqueId
 }
+
+export function getNowType (state) {
+	return state.navigate.nowType
+}
+
+export function getNowFloor (state) {
+	return state.navigate.nowFloor
+}
+
+export function getStartFloor (state) {
+	return state.navigate.startFloor
+}
+
+export function getDestFloor (state) {
+	return state.navigate.destFloor
+}
+
+export function getStartLayer (state) {
+	return state.navigate.startLayer
+}
+
+export function getDestLayer (state) {
+	return state.navigate.destLayer
+}

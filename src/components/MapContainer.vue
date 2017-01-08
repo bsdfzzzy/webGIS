@@ -21,14 +21,15 @@
 <script>
 	import ol from 'openlayers/dist/ol.js'
   import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro, showItsIndoor, showItsBusiness } from '../actions/instruction'
-  import { showNavigate, closeNavigate, setStart } from '../actions/navigate'
+  import { showNavigate, closeNavigate, setStart, setNowType, setNowFloor } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
   import { setHots } from '../actions/hot'
   import { showBlocks, showBusinesses, showTeams, setBlocks, setBusinesses, setTeams } from '../actions/list'
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
     getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
-    getListAll, getRoute, getInitialType, getInitialFloor, getInitialUniqueId } from '../getters'
+    getListAll, getRoute, getInitialType, getInitialFloor, getInitialUniqueId, getStartLayer, 
+    getDestLayer, getNowType, getNowFloor, getStartFloor, getDestFloor } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -50,7 +51,11 @@
         getRoute,
         getInitialType,
         getInitialFloor,
-        getInitialUniqueId
+        getInitialUniqueId,
+        getNowType,
+        getNowFloor,
+        getStartFloor,
+        getDestFloor
       },
       actions: {
         showInstruction,
@@ -77,7 +82,9 @@
         setHots,
         showItsIndoor,
         showItsBusiness,
-        setStart
+        setStart,
+        setNowType,
+        setNowFloor
       }
     },
   	methods: {
@@ -124,15 +131,19 @@
         switch(content) {
           case '1F': 
             this.changeFloor(1)
+            this.setNowFloor(1)
             break
           case '2F': 
             this.changeFloor(2)
+            this.setNowFloor(2)
             break
           case '3F': 
             this.changeFloor(3)
+            this.setNowFloor(3)
             break
           case '4F': 
             this.changeFloor(4)
+            this.setNowFloor(4)
             break
         }
       }
@@ -186,6 +197,55 @@
 						})
 					})
 					map.addLayer(pathResult)
+        }
+      },
+      getNowType (type) {
+        let that =this
+        if (type == 'outdoor') {
+          if (window.pathStart) {
+            map.removeLayer(pathStart)
+            map.addLayer(pathStart)
+          }
+          if (window.pathDest) {
+            map.removeLayer(pathDest)
+            map.addLayer(pathDest)
+          }
+        } else {
+          if (window.pathStart) {
+            if (that.getStartFloor == that.getNowFloor) {
+              map.removeLayer(pathStart)
+              map.addLayer(pathStart)
+            } else {
+              map.removeLayer(pathStart)
+            }
+          }
+          if (window.pathDest) {
+            if (that.getDestFloor == that.getNowFloor) {
+              map.removeLayer(pathDest)
+              map.addLayer(pathDest)
+            } else {
+              map.removeLayer(pathDest)
+            }
+          }
+        }
+      },
+      getNowFloor (floor) {
+        let that = this
+        if (window.pathStart) {
+          if (that.getStartFloor == that.getNowFloor) {
+            map.removeLayer(pathStart)
+            map.addLayer(pathStart)
+          } else {
+            map.removeLayer(pathStart)
+          }
+        }
+        if (window.pathDest) {
+          if (that.getDestFloor == that.getNowFloor) {
+            map.removeLayer(pathDest)
+            map.addLayer(pathDest)
+          } else {
+            map.removeLayer(pathDest)
+          }
         }
       }
     },
@@ -387,8 +447,10 @@
         let ul_ = document.getElementById('chooseFloor')
         if (resolution < 0.000002682209014892578) {
           ul_.style.display = 'block'
+          that.setNowType('indoor')
         } else {
           ul_.style.display = 'none'
+          that.setNowType('outdoor')
         }
       })
       let shouldShowIndoor = [61, 62, 64, 63, 59, 60, 58, 57, 89]

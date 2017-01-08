@@ -74,3 +74,11 @@ export const showNavigateContent = ({dispatch}, ...args) => {
 export const closeNavigateContent = ({dispatch}, ...args) => {
 	return dispatch(types.CLOSE_NAVIGATE_CONTENT, ...args)
 }
+
+export const setNowType = ({dispatch}, ...args) => {
+	return dispatch(types.SET_NOW_TYPE, ...args)
+}
+
+export const setNowFloor = ({dispatch}, ...args) => {
+	return dispatch(types.SET_NOW_FLOOR, ...args)
+}

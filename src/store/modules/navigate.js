@@ -18,7 +18,13 @@ const state = {
   	disableButton: false,
     checkStart: true,
     checkDest: true,
-    route: []
+    route: [],
+    startFloor: 1,
+    destFloor: 1,
+    nowFloor: 1,
+    nowType: 'outdoor',
+    startLayer: "",
+    destLayer: ""
 }
 
 const styles = {
@@ -104,6 +110,7 @@ const mutations = {
   },
   [types.SET_START] (state, start) {
     state.start = start
+    state.startFloor = start.floor
     let startMarker = new ol.Feature({
       type: 'iconStart',
       geometry: new ol.geom.Point(start.coordinate),
@@ -120,10 +127,13 @@ const mutations = {
         return styles[feature.get('type')];
       }
     })
+    pathStart.setZIndex(99)
+    state.startLayer = pathStart
     map.addLayer(pathStart)
   },
   [types.SET_DEST] (state, dest) {
     state.direction = dest
+    state.destFloor = dest.floor
     let destMarker = new ol.Feature({
       type: 'iconDest',
       geometry: new ol.geom.Point(dest.coordinate),
@@ -140,6 +150,8 @@ const mutations = {
         return styles[feature.get('type')];
       }
     })
+    pathDest.setZIndex(99)
+    state.destLayer = pathDest
     map.addLayer(pathDest)
   },
   [types.SET_CHECKSTART] (state, bol) {
@@ -158,6 +170,12 @@ const mutations = {
   [types.CLOSE_NAVIGATE_CONTENT] (state) {
     state.whetherShowNavigateContent = false
     state.whetherShowNavigate = true
+  },
+  [types.SET_NOW_FLOOR] (state, floor) {
+    state.nowFloor = floor
+  },
+  [types.SET_NOW_TYPE] (state, type) {
+    state.nowType = type
   }
 }
 
