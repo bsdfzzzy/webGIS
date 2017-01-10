@@ -745,7 +745,7 @@
   .navigateLogo {
     position: fixed;
     right: 10px;
-    top: 40%;
+    top: 75%;
     background: white;
     border-radius: 100px;
     width: 40px;
