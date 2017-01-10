@@ -7,10 +7,13 @@
 			<div class="brief-ins">
 				<img :src="getIntro.picture" width="60px" height="60px" class="brief-ins-logo">
 				<div class="brief-ins-content">
-					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong><span v-if="getIntro.location">{{getIntro.location}}</span></p>
+					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong></p>
+					<!--<span v-if="getIntro.location">{{getIntro.location}}</span>-->
+					<br />
 					<p style="font-size: 13px;">{{getIntro.desc}}</p>
-					<p v-if="getIntro.location" style="font-size: 13px; color: 888;">地址：{{getIntro.location}}</p>
-					<p v-if="getIntro.telephone" style="font-size: 13px; color: 888;">电话：{{getIntro.telephone}}</p>
+					<br />
+					<p v-if="getIntro.location" style="font-size: 13px; color: 888;"><img src="/static/img/location.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getIntro.location}}</p>
+					<p v-if="getIntro.telephone" style="font-size: 13px; color: 888;"><img src="/static/img/phone.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getIntro.telephone}}</p>
 				</div>	
 			</div>
 			 <div class="menu">
