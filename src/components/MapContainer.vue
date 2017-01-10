@@ -500,6 +500,7 @@
       let shouldShowIndoor = [61, 62, 64, 63, 59, 60, 58, 57, 89]
       map.on('click', function(evt) {
         that.closeInstruction()
+        that.closeNavigate()
         let view2 = map.getView()
         let view2Resolution = view2.getResolution()
         let source2

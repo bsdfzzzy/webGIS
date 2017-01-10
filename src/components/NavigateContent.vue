@@ -3,7 +3,9 @@
 		<div class="closeNavigateBox" @click="closeNavigateContentBox">×</div>
 		<div class="content">
 			<div class="mainContent">
-				{{getStart ? getStart.title : ''}} &nbsp;&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;&nbsp; {{getDest? getDest.title : ''}}
+                <div class="contentName">{{getStart ? getStart.title : ''}}</div>
+                <div class="contentArrow">>></div>
+                <div class="contentName">{{getDest? getDest.title : ''}}</div>
 			</div>
 		</div>
 	</div>
@@ -49,5 +51,13 @@
         color: #666;
         min-height: 50px;
         line-height: 50px;
+        display: flex;
+        text-align: center;
+    }
+    .mainContent .contentName {
+        flex: 3;
+    }
+    .mainContent .contentArrow {
+        flex: 1;
     }
 </style>

@@ -99,7 +99,7 @@
 		overflow: hidden;
 	}
 	.itemContentContainer {
-		width: 100%;
+		width: calc(100% - 40px);
 		padding: 30px 0 20px 20px;
 		overflow: hidden;
 	}
