@@ -145,7 +145,13 @@
 				let that = this
 				let pushDisplay = []
 				if (newValue == "") {
-					that.setDisplay(that.getOldDisplay)
+					if (that.getNowSelectItem == 'blocks') {
+						that.setDisplay(that.getListBlocks)
+					} else if (that.getNowSelectItem == 'teams') {
+						that.setDisplay(that.getListTeams)
+					} else if (that.getNowSelectItem == 'businesses') {
+						that.setDisplay(that.getListBusinesses)
+					}
 				} else {
 					for (let item of that.getListDisplay) {
 						let matcher = eval('/' + newValue + '/')

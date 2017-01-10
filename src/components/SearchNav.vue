@@ -2,7 +2,7 @@
 	<div class="searchNav">
 		<type-button v-if="whethershowtypebutton"></type-button>
 		<div class="searchBox">
-			<div class="searchColumn"  @click="showList">
+			<div class="searchColumn"  @click="showItsList">
 				<div class="inputBack" v-if="!focus && (keyword == '' || keyword == undefined)">
 					<img src="/static/img/Nav_search.png" width="20px" height="20px" />
 					<span>Search...</span>
@@ -23,6 +23,8 @@
     import { setPromptDisplay, showPrompt, closePrompt, clearPrompt } from '../actions/prompt'
 	import { showHot, closeHot } from '../actions/hot'
 	import { showList } from '../actions/list'
+	import { closeInstruction } from '../actions/instruction'
+	import { closeNavigate } from '../actions/navigate'
 	import { setSearchResult, showSearchResult } from '../actions/searchResult'
 	import { getListAll, getPromptDisplay } from '../getters'
 	import TypeButton from './searchNav/TypeButton'
@@ -54,7 +56,9 @@
 				setSearchResult,
 				showSearchResult,
 				showList,
-				clearPrompt
+				clearPrompt,
+				closeInstruction,
+				closeNavigate
 			}
 		},
 		data () {
@@ -76,6 +80,11 @@
 			showsearchfloat: function () {
 				this.showSearchFloat()
 				this.closeSearchNav()
+			},
+			showItsList () {
+				this.showList()
+				this.closeNavigate()
+				this.closeInstruction()
 			},
 			searchResult (e) {
 				let that = this

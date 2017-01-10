@@ -356,7 +356,7 @@
 
       // Initial User Position
       let userCoor = this.getUserCoordinate
-      if (that.getInitialUniqueId != 0) {
+      if (that.getInitialUniqueId != 0 && that.getInitialUniqueId != 99999) {
         let user = new ol.Feature({
           geometry: new ol.geom.Point(userCoor)
         })
