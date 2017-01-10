@@ -1,7 +1,7 @@
 <template>
 	<div class="item">
 		<div class="itemContentContainer">
-			<img :src="picture" width="60px" height="60px" class="itemContentImg" v-if="picture">
+			<img :src=`http://map.gugoo.cc/${picture}` width="60px" height="60px" class="itemContentImg" v-if="picture">
 			<p class="itemContentTitle"><strong>{{title}}</strong></p>
 			<p class="itemContentDesc" v-if="location">{{location}}</p>
 			<p class="itemContentDesc" v-if="content">{{content}}</p>

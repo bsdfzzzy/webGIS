@@ -1,10 +1,11 @@
 <template>
 	<div class="briefDetail">
-		<img :src="getDetail.picture" width="50px" height="50px" class="detailImg">
+		<img :src=`http://map.gugoo.cc/${getDetail.picture}` width="50px" height="50px" class="detailImg">
 		<div class="briefDetailContent">
 			<p><strong>{{getDetail.title}}</strong></p>
-			<p v-if="getDetail.location" style="font-size: 13px; color: 888;">地址：{{getDetail.location}}</p>
-			<p v-if="getDetail.telephone" style="font-size: 13px; color: 888;">电话：{{getDetail.telephone}}</p>
+			<br />
+			<p v-if="getDetail.location" style="font-size: 13px; color: 888;"><img src="/static/img/location.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getDetail.location}}</p>
+			<p v-if="getDetail.telephone" style="font-size: 13px; color: 888;"><img src="/static/img/phone.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getDetail.telephone}}</p>
 		</div>
 		<img src="/static/img/route.png" width="50px" height="50px" class="route" @click="setDestination">
 	</div>
@@ -83,7 +84,7 @@
 	}
 	.route {
 		float: left;
-		margin-left: 10px;
+		margin-left: 35px;
 		background: #34a4e4;
 		border-radius: 40px;
 	}
