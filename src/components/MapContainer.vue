@@ -213,6 +213,26 @@
             map.removeLayer(pathDest)
             map.addLayer(pathDest)
           }
+          if (window.pathResult) {
+            map.removeLayer(pathResult)
+            let route = this.getRoute
+            let lineFeature = new ol.Feature({
+						  geometry: new ol.geom.LineString(route[0])
+					  })
+					  let lineSource = new ol.source.Vector({
+						  features: [lineFeature]
+					  })
+					  window.pathResult = new ol.layer.Vector({
+						  source: lineSource,
+						  style: new ol.style.Style({
+							  stroke: new ol.style.Stroke({
+								  width: 3,
+								  color: [255, 0, 0, 0.8]
+							  })
+						  })
+					  })
+					  map.addLayer(pathResult)
+          }
         } else {
           if (window.pathStart) {
             if (that.getStartFloor == that.getNowFloor) {
@@ -229,6 +249,26 @@
             } else {
               map.removeLayer(pathDest)
             }
+          }
+          if (window.pathResult) {
+            map.removeLayer(pathResult)
+            let floor = this.getMapFloor
+            let lineFeature = new ol.Feature({
+						  geometry: new ol.geom.LineString(route[Number(floor - 1)])
+					  })
+					  let lineSource = new ol.source.Vector({
+						  features: [lineFeature]
+					  })
+					  window.pathResult = new ol.layer.Vector({
+						  source: lineSource,
+						  style: new ol.style.Style({
+							  stroke: new ol.style.Stroke({
+								  width: 3,
+								  color: [255, 0, 0, 0.8]
+							  })
+						  })
+					  })
+					  map.addLayer(pathResult)
           }
         }
       },
