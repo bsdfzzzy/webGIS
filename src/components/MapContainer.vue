@@ -375,6 +375,7 @@
           source: vectorSource
         })
         that.setVectorLayer(vectorLayer)
+        vectorLayer.setZIndex(99)
         view.setCenter(userCoor)
         if (that.getInitialType == 'outdoor') {
           view.setZoom(3)
