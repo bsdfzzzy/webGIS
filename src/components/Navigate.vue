@@ -368,6 +368,10 @@
 	.fromAndTo {
 		width: 100%;
 		height: auto;
+		background-image: url('/static/img/start_end.png');
+		background-repeat: no-repeat;
+		background-position: left center;
+		background-size: 80% 80%;
 	}
 	.fromAndTo input {
 		width: 100%;
@@ -377,10 +381,10 @@
 		background: none;
 		outline: none;
 		border: none;
-		border-bottom: 1px dashed #888;
-		padding-left: 10px;
+		padding-left: 20px;
 		margin-top: 4px;
 		font-weight: bolder;
+		background: rgba(0, 0, 0, 0);
 	}
 	.chooseStartBox {
 		width: 100%;
