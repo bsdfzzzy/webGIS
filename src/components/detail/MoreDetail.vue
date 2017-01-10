@@ -72,7 +72,6 @@
 	}
 	.moreDetailNav {
 		display: inline-block;
-		cursor: pointer;
 		flex: 1;
 		text-align: center;
 		height: 30px;

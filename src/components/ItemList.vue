@@ -187,7 +187,6 @@
 		text-align: center;
 		box-sizing: border-box;
 		height: 30px;
-		cursor: pointer;
 	}
 	.listNav :not(:first-child) {
 		border-left: 1px solid #ccc;
