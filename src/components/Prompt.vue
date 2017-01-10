@@ -7,7 +7,7 @@
                 <ul>
                     <li v-for="item in getPromptDisplay" data-id="{{item.unique_id}}" @click="search">
                         <p class="promptName">{{item.title}}</p>
-                        <p class="promptDesc"></p>
+                        <p class="promptDesc" v-if="item.location">{{item.location}}</p>
                     </li>
                 </ul>
             </div>
