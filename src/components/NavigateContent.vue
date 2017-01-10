@@ -1,6 +1,6 @@
 <template>
 	<div class="navigateContent">
-		<div class="closeNavigateBox" @click="closeNavigateContentBox">×</div>
+		<!--<div class="closeNavigateBox" @click="closeNavigateContentBox">×</div>-->
 		<div class="content">
 			<div class="mainContent">
                 <div class="contentName">{{getStart ? getStart.title : ''}}</div>

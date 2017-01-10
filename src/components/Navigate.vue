@@ -1,6 +1,6 @@
 <template>
 	<div class="navigate">
-		<div class="closeNavigateBox" @click="closeNavigateBox">×</div>
+		<!--<div class="closeNavigateBox" @click="closeNavigateBox">×</div>-->
 		<div class="content">
 			<div class="mainContent">
 				<div class="fromAndTo">
