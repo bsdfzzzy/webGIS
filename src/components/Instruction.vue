@@ -5,7 +5,7 @@
 				<img :src="up ? '/static/img/Panel_arrow-up.png' : '/static/img/Panel_arrow-down.png'" width="30px" />	
 			</div>-->
 			<div class="brief-ins">
-				<img :src=`http://map.gugoo.cc/${getIntro.picture}` width="60px" height="60px" class="brief-ins-logo">
+				<img :src="'http://map.gugoo.cc/' + getIntro.picture" width="60px" height="60px" class="brief-ins-logo">
 				<div class="brief-ins-content">
 					<p><strong style="font-size:15px; margin-right:15px;">{{getIntro.title}}</strong></p>
 					<!--<span v-if="getIntro.location">{{getIntro.location}}</span>-->

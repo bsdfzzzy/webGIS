@@ -1,6 +1,6 @@
 <template>
 	<div class="briefDetail">
-		<img :src=`http://map.gugoo.cc/${getDetail.picture}` width="50px" height="50px" class="detailImg">
+		<img :src="'http://map.gugoo.cc/' + getDetail.picture" width="50px" height="50px" class="detailImg">
 		<div class="briefDetailContent">
 			<p><strong>{{getDetail.title}}</strong></p>
 			<br />
