@@ -12,8 +12,8 @@
 					<br />
 					<p style="font-size: 13px;">{{getIntro.desc}}</p>
 					<br />
-					<p v-if="getIntro.location" style="font-size: 13px; color: 888;"><img src="/static/img/location.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getIntro.location}}</p>
-					<p v-if="getIntro.telephone" style="font-size: 13px; color: 888;"><img src="/static/img/phone.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;{{getIntro.telephone}}</p>
+					<p v-if="getIntro.location" class="introPosition"><img src="/static/img/location.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;<span>{{getIntro.location}}</span></p>
+					<p v-if="getIntro.telephone" class="introTel"><img src="/static/img/phone.png" width="10px" height="10px" />&nbsp;&nbsp;&nbsp;<span>{{getIntro.telephone}}</span></p>
 				</div>	
 			</div>
 			 <div class="menu">
@@ -198,5 +198,32 @@
 	}
 	.navigateButton img {
 		z-index: 1000;
+	}
+	.introPosition {
+		font-size: 13px;
+		color: 888;
+		position: relative;
+		display: flex;
+	}
+	.introTel {
+		margin-top: 5px;
+		font-size: 13px;
+		display: flex;
+		color: 888;
+		position: relative;
+	}
+	.introPosition span {
+		flex: 100;
+	}
+	.introTel span {
+		flex: 100;
+	}
+	.introTel img {
+		height: 15px;
+		flex: 1;
+	}
+	.introPosition img {
+		height: 15px;
+		flex: 1;
 	}
 </style>
