@@ -21,7 +21,7 @@
 <script>
 	import ol from 'openlayers/dist/ol.js'
   import { showInstruction, closeInstruction, changeBrief, changeTitle, setIntro, showItsIndoor, showItsBusiness } from '../actions/instruction'
-  import { showNavigate, closeNavigate, setStart, setNowType, setNowFloor } from '../actions/navigate'
+  import { showNavigate, closeNavigate, setStart, setNowType, setNowFloor, closeNavigateContent } from '../actions/navigate'
   import { changeFloor, setMapLayer, setVectorLayer, setF1Layer, setF2Layer, setF3Layer, 
     setF4Layer, setLayers } from '../actions/map'
   import { setHots } from '../actions/hot'
@@ -84,7 +84,8 @@
         showItsBusiness,
         setStart,
         setNowType,
-        setNowFloor
+        setNowFloor,
+        closeNavigateContent
       }
     },
   	methods: {
@@ -555,6 +556,7 @@
                   }
                   that.setIntro(item)
                   that.showInstruction()
+                  that.closeNavigateContent()
                   that.closeNavigate()
                 }
               } 
