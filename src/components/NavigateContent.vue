@@ -55,7 +55,10 @@
         text-align: center;
     }
     .mainContent .contentName {
+        font-size: 15px;
+        line-height: 20px;
         flex: 3;
+        margin: auto;
     }
     .mainContent .contentArrow {
         flex: 1;
