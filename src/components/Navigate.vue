@@ -189,6 +189,9 @@
 				let destPoint = this.getDirectionCoordination
 				let startPointInfo = this.getStart
 				let destPointInfo = this.getDest
+				let wgs84Sphere = new ol.Sphere(6378137)
+				let pathLength = wgs84Sphere.haversineDistance(startPointInfo.coordinate, destPointInfo.coordinate)
+				console.log(wgs84Sphere.haversineDistance(startPointInfo.coordinate, destPointInfo.coordinate))
 				// let startPointId, descPointId
 				let popup = document.getElementById("popup")
 				popup.style.display = "none"
@@ -215,6 +218,21 @@
 							})
 						})
 						map.addLayer(pathResult)
+						let view = map.getView()
+						if (pathLength > 0 && pathLength <= 50) {
+							view.setZoom(6)
+						} else if (pathLength > 50 && pathLength <= 100) {
+							view.setZoom(5)
+						} else if (pathLength > 100 && pathLength <= 200) {
+							view.setZoom(4)
+						} else if (pathLength > 200 && pathLength <= 400) {
+							view.setZoom(3)
+						} else if (pathLength > 400 && pathLength <= 1000) {
+							view.setZoom(2)
+						} else {
+							view.setZoom(1)
+						}
+						view.setCenter(tempLine[parseInt(tempLine.length / 2)])
 						that.startNavigate()
 						that.showNavigateContent()
 					}

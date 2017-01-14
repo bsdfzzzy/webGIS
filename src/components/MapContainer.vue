@@ -398,8 +398,13 @@
           }
         })
       } else {
-        view.setCenter(userCoor)
-        view.setZoom(0)
+        if (that.getInitialUniqueId == 99999) {
+          view.setCenter(userCoor)
+          view.setZoom(6)
+        } else {
+          view.setCenter(userCoor)
+          view.setZoom(5)
+        }
       }
       that.setLayers()
       window.map = new ol.Map({
