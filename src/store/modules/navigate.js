@@ -3,6 +3,7 @@ import coordinate from './coordinate'
 import ol from 'openlayers/dist/ol.js'
 
 const state = {
+    isNavigating: false,
     whetherShowNavigate: true,
     whetherShowNavigateContent: false,
   	start: {
@@ -129,6 +130,8 @@ const mutations = {
     })
     pathStart.setZIndex(99)
     state.startLayer = pathStart
+    let view = map.getView()
+    view.setCenter(start.coordinate)
     map.addLayer(pathStart)
   },
   [types.SET_DEST] (state, dest) {
@@ -152,6 +155,8 @@ const mutations = {
     })
     pathDest.setZIndex(99)
     state.destLayer = pathDest
+    let view = map.getView()
+    view.setCenter(dest.coordinate)
     map.addLayer(pathDest)
   },
   [types.SET_CHECKSTART] (state, bol) {
@@ -176,6 +181,12 @@ const mutations = {
   },
   [types.SET_NOW_TYPE] (state, type) {
     state.nowType = type
+  },
+  [types.SET_IS_NAVIGATING] (state) {
+    state.isNavigating = true
+  },
+  [types.SET_IS_NOT_NAVIGATING] (state) {
+    state.isNavigating = false
   }
 }
 

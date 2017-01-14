@@ -261,3 +261,7 @@ export function getStartLayer (state) {
 export function getDestLayer (state) {
 	return state.navigate.destLayer
 }
+
+export function getIsNavigating (state) {
+	return state.navigate.isNavigating
+}

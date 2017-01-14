@@ -82,3 +82,11 @@ export const setNowType = ({dispatch}, ...args) => {
 export const setNowFloor = ({dispatch}, ...args) => {
 	return dispatch(types.SET_NOW_FLOOR, ...args)
 }
+
+export const startNavigate = ({dispatch}, ...args) => {
+	return dispatch(types.SET_IS_NAVIGATING, ...args)
+}
+
+export const stopNavigate = ({dispatch}, ...args) => {
+	return dispatch(types.SET_IS_NOT_NAVIGATING, ...args)
+}

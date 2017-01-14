@@ -43,6 +43,8 @@ export const SET_NOW_FLOOR = 'SET_NOW_FLOOR'
 export const SET_NOW_TYPE = 'SET_NOW_TYPE'
 export const GET_NOW_FLOOR = 'GET_NOW_FLOOR'
 export const GET_NOW_TYPE = 'GET_NOW_TYPE'
+export const SET_IS_NAVIGATING = 'SET_IS_NAVIGATING'
+export const SET_IS_NOT_NAVIGATING = 'SET_IS_NOT_NAVIGATING'
 
 // Coordinate
 export const SET_STARTCOORDINATE = 'SET_STARTCOORDINATE'

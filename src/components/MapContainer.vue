@@ -15,7 +15,7 @@
     <li class="floor{{getMapFloor == 4 ? ' active' : ''}}" @click="changeMapFloor">4F</li>
   </ul>
   <div class="navigateLogo" @click="logoToShowNavigate" v-if="getShowNavigateLogo">
-    <img src="/static/img/navi.png" width="40px" height="40px">
+    <img :src="getIsNavigating ? '/static/img/finish.png' : '/static/img/route.png'" width="40px" height="40px">
   </div>
 </template>
 <script>
@@ -29,7 +29,7 @@
   import { getUserCoordinate, getBuilding, getPathLayer, getShowNavigateLogo, getMapFloor,
     getMapLayer, getVectorLayer, getF1Layer, getF2Layer, getF3Layer, getF4Layer, getLayers,
     getListAll, getRoute, getInitialType, getInitialFloor, getInitialUniqueId, getStartLayer, 
-    getDestLayer, getNowType, getNowFloor, getStartFloor, getDestFloor } from '../getters'
+    getDestLayer, getNowType, getNowFloor, getStartFloor, getDestFloor, getIsNavigating } from '../getters'
   import axios from 'axios'
 
   export default {
@@ -55,7 +55,8 @@
         getNowType,
         getNowFloor,
         getStartFloor,
-        getDestFloor
+        getDestFloor,
+        getIsNavigating
       },
       actions: {
         showInstruction,
@@ -90,6 +91,11 @@
     },
   	methods: {
       logoToShowNavigate () {
+        if (this.getIsNavigating) {
+          map.removeLayer(window.pathStart)
+          map.removeLayer(window.pathResult)
+          map.removeLayer(window.pathDest)
+        }
         this.showNavigate()
       },
    		loadMap: function () {
@@ -748,7 +754,7 @@
   .navigateLogo {
     position: fixed;
     right: 10px;
-    top: 75%;
+    top: 30%;
     background: white;
     border-radius: 100px;
     width: 40px;

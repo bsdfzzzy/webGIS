@@ -36,7 +36,7 @@
 	import { setCheckStart, setCheckDest, closeNavigate, setStart, setDest, showButton, 
 		disableButton, displayChooseStart, displayChooseDirection, closeChooseStart, 
 		closeChooseDirection, showAllStarts, showAllDirections, showPartialStarts, 
-		showPartialDirections, setRoute, showNavigateContent } from '../actions/navigate'
+		showPartialDirections, setRoute, showNavigateContent, startNavigate } from '../actions/navigate'
 	import { setDestId } from '../actions/instruction'
 	import { setStartCoordinate, setDirectionCoordinate } from '../actions/coordinate'
 	import { showSearchFloat, choosingStart, choosingDest, notChoosingStart, notChoosingDest } from '../actions/searchFloat'
@@ -101,7 +101,8 @@
 				notChoosingDest,
 				showSearchFloat,
 				setRoute,
-				showNavigateContent
+				showNavigateContent,
+				startNavigate
 			}
 		},
 		methods: {
@@ -214,6 +215,7 @@
 							})
 						})
 						map.addLayer(pathResult)
+						that.startNavigate()
 						that.showNavigateContent()
 					}
 				}).catch(function (e) {
